@@ -411,7 +411,7 @@ file_data = g_malloc(sizeof(struct file_pak));
 file_data->id = QE;
 file_data->group = QE;
 file_data->menu = TRUE;
-file_data->label = g_strdup("QE");
+file_data->label = g_strdup("Quantum Espresso");
 file_data->ext = NULL;
 file_data->ext = g_slist_append(file_data->ext, "qein");
 file_data->write_file = write_qe;
@@ -905,7 +905,7 @@ while (list)
   name = list->data;
   list = g_slist_next(list);
 
-  if (!g_pattern_match_string(ps, name))
+  if (!g_pattern_spec_match_string(ps, name))
     {
     files = g_slist_remove(files, name);
     g_free(name);
