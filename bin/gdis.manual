@@ -101,59 +101,59 @@ Modifying the default properties for an element, such as the colour, size, and c
 
 \i Builder
 
-When the Tools->Builder->Editing menu option, or the corresponding icon is clicked, then the model editing dialog will be presented. If the Make new model button is pressed, and then the add atoms button, the left mouse button can no longer be used for creating and modifying selections. Instead, single clicking will now add atoms. Note that when adding atoms, the selection properties pane can be used to modify the element, charge, and even position of the new atom. Buttons for switching to other operation modes, such as adding and deleting bonds, are also available. Also, if the [Model Images] pulldown has been employed to generate periodic images, the [Make supercell] button will remove all symmetry and make a new unit cell from the total model.
+When the Tools->Builder->Editing menu option is selected or corresponding icon is clicked, the model editing dialog is displayed. If the Make new model button is pressed, and then the Add atoms button, the left mouse button can no longer be used for selecting atoms or molecules. Instead, with each single click a new atom is added. Note that the added atom is initially assigned to (fictitious) element 'X'; the Selection Properties pane can be used to modify the element, charge, and even position of the new atom. Buttons for switching to other operation modes, such as adding and deleting bonds, are also available. Also, if the [Model Images] pulldown has been employed to generate periodic images, the [Make supercell] button will remove all symmetry and make a new unit cell from the total model.
 
 \i Spatials
 
-Additional geometric objects, such as planes and vectors, can be defined within GDIS. This may be for the purpose of display, or for defining a reference object to build a symmetry operation around.
+Additional geometric objects, such as planes and vectors, can be defined within GDIS. This might be for the purpose of display, or for defining a reference object to build a symmetry operation around.
 
-Adding vector or plane spatials is straight forward, and is done by clicking on 2 or 3 atoms. The new object is then drawn and will appear in the dialog spatial list. Ribbon objects are more complex. Essentially, these provide a means to simplify the drawing of organic materials. Any structure that is composed of a series of linked cyclic carbon groups can be replaces by a ribbon that passes through the plane of the cyclic group. For more details, consult the following reference:
-
-Colours of all, or selected, spatials can also be modifed in this dialog.
+Adding vector or plane spatials is straightforward, and is done by clicking on two or three atoms. The new object is then drawn and will appear in the dialog spatial list. Ribbon objects are more complex. Essentially these provide a means to simplify the drawing of organic materials. Any structure that is composed of a series of linked cyclic carbon groups can be replaced by a ribbon that passes through the plane of the cyclic group. For more details, consult the following reference:
 
 [REF: Ribbon paper]
 
+Colours of all, or selected, spatials can also be modifed in this dialog.
+
 \i Transformations
 
-The transformations tab provides a powerful means for performing symmetry operations on atomic positions and repeat vectors of a structure. Values defining a 3x3 transformation matrix, and 3x1 translational offset, may be hand edited by the user, or, filled out with some pre-defined operations such as rotations and mirror planes. To define such operations, a reference spatial need to be supplied. The reference spatial may be the x, y, or z axis in which the corresponding single characters 'x', 'y', or 'z' can be supplied. In addition, if a spatial object (eg vector or plane) has been defined, this may also be used as a reference object. Once the desired transformation matrix has been constructed, it may be applied to the entire model or to a selected portion of the atoms. 
+The Transformations tab provides a powerful means for performing symmetry operations on atomic positions and repeat vectors of a structure. Values defining a 3x3 transformation matrix, and 3x1 translational offset, may be hand-edited by the user or filled out with some pre-defined operations such as rotations and mirror planes. To define such operations, a reference spatial needs to be supplied. The reference spatial may be the x, y, or z axis, in which case the corresponding single characters 'x', 'y', or 'z' should be entered. In addition, if a spatial object (e.g., vector or plane) has been defined, this may also be used as a reference object. Once the desired transformation matrix has been constructed, it may be applied to the entire model or to a selected portion of atoms. 
 
-Operations on the repeat vectors are a little more complicated. A typical use might be to reorient a surface so the repeat vectors lie along a different direction to the default. This may be useful in forming commensurate surfaces, or in building a correct surface step/kink construction. For an example of this useage, see the following paper for more details:
+Operations on the repeat vectors are a little more complicated. A typical use might be to reorient a surface so the repeat vectors lie along a different direction to the default. This may be useful in forming commensurate surfaces, or in building a correct surface step/kink construction. For an example of this useage, see the following paper:
 
 [ref]
 
-Adjustments to the periodicity of a model may also be performed. For example, to convert from a unit cell (3D periodic) to an isolated molecule, set the alter periodicity spinner to 0 and click the button. Note that to go from a lower to higher periodicity, repeat vectors must necessarily be supplied. These should be placed in columns in the transformation matrix.
+Adjustments to the periodicity of a model may also be performed. For example, to convert from a unit cell (3D periodic) to an isolated molecule, set the Alter periodicity spinner to 0 and click the button. Note that to go from a lower to higher periodicity, suitable repeat vectors must necessarily be supplied. These should be placed in columns in the transformation matrix.
 
 \i Labelling
 
 TODO
 
-Atoms in a model have a number of associated labels. These may convey information to computational programs, such as ghost or dummy atoms, also atoms that are fixed in position or allowed to move and so on. For the programs GDIS supports, these labels may be modified by using this tab. The labels can be used to colour the atoms, and therebye show the distribution in a model, and the labels can be modified by selecting a group and applied the desired change.
+Atoms in a model have a number of associated labels. These may convey information for use in other computational programs, such as whether an atom is a ghost or dummy atom, fixed in its position or allowed to mova,e and so on. For the programs GDIS supports, these labels may be modified by using this tab. The labels can be used to colour the atoms, and thereby show the distribution in a model, and the labels can be modified by selecting a group and applying the desired change.
 
 \i Library
 
-A small number of preloaded structures are available as part of the default gdis library. Under the library tab there are two lists. The left list is used to navigate the database. The available models are shown in the right list, and can be loaded by double clicking. The models are stored in the gdis.library file, which is a text file that can be extended by the user if so desired.
+A small number of preloaded structures are available as part of the default GDIS library. Under the library tab there are two lists. The left list is used to navigate the database. The available models are shown in the right list, and can be loaded by double clicking. The models are stored in the gdis.library file, which is a text file that can be extended by the user if so desired.
 
 \h Crystal Surfaces
 
 \p image_surface
 
-	GDIS can load a selected range of two dimensional, or surface, models (see File Types). In addition, unit cells may also be cleaved on an arbitrary plane to create a new surface model. The surface builder dialog may be invoked if a three dimensionally periodic structure (crystal unit cell) is currently active. This dialog presents the user with numerous options.
+	GDIS can load a selected range of two-dimensional, or surface, model formats (see File Types). In addition, unit cells may also be cleaved on an arbitrary plane to create a new surface model. The surface builder dialog may be invoked if a three-dimensionally periodic structure (crystal unit cell) is currently active. This dialog presents the user with numerous options.
 
 \i Defining the surface
 
-	A planar cleaved surface can be defined uniquely by the miller (hkl) indices, and a shift value. The Miller indices are inverse intercepts on the crystallographic axes, whilst the shift value represents a fractional (0.0 - 1.0) offset within the repeat slice of that face, namely the Dhkl thickness. There are two additional values; the region 1 and region 2 depths. These are multiples of Dhkl required when building the new model. The size of region 2 is chosen to be thick enough so that the atoms represent the effect of the bulk upon the atoms in region 1. The size of region 1 is generally chosen so that some property, such as the surface energy, is converged. Clearly, these values are system dependent but are typically chosen so that the thickness would approximately be between 10 and 20 Angstroms.
+	A planar cleaved surface can be defined uniquely by the Miller (hkl) indices, and a shift value. The Miller indices are inverse intercepts on the crystallographic axes, whilst the shift value represents a fractional (0.0 - 1.0) offset within the repeat slice of that face, namely the Dhkl thickness. There are two additional values: the region 1 and region 2 depths. These are multiples of Dhkl thicknesses required when building the new model. The size of region 2 should be chosen to be thick enough so that the atoms represent the effect of the bulk upon the atoms in region 1. The size of region 1 is generally chosen so that some property, such as the surface energy, is converged. Clearly, these values are system dependent but are typically between 10 and 20 angstroms.
 
 \i Analysing the surface
 
-Once a surface has been defined, the create button can be clicked - which will result in a new model being created. This new model inherits many of the features of the source unit cell (such as GULP potentials) but is two dimensionaly periodic. This new model can then be edited like any other, or used in energy calculations. Note that shortcut buttons for performing GULP energy calculations are provided underneath the hkl list. These buttons provide a means by which to automatically compute the surface/attachment energy for a face, without having to create the model and submit a GULP job. By selecting multiple entries in the list, multiple calculations can be quickly performed.
+Once a surface has been defined, the Create button can be clicked to create a new model. This new model inherits many of the features of the source unit cell (such as GULP potentials) but is two-dimensionally periodic. The new model can then be edited like any other model, or used in energy calculations. Note that shortcut buttons for performing GULP energy calculations are provided underneath the hkl list. These buttons provide a means by which to automatically compute the surface/attachment energy of a face, without having to create the model and submit a GULP job. By selecting multiple entries in the list, multiple calculations can be quickly performed.
 
 \i Morphology prediction
 
-Often morphology prediction involves looking at the relative importance of a number of facets that make up a crystal form. In such a study, it is common to begin with the BFDH morphology prediction - which is a ranking of faces based on Dhkl values. GDIS provides a convenient means to quickly list (in the right hand side of the surface dialog) a desired number of Dhkl ranked faces. By clicking on the Display morphology, a predicted crystal habit based on the Dhkl values will be drawn in the active model. If Create morpgology is clicked, the same habit will be created in a blank new model.
+Often morphology prediction involves looking at the relative importance of a number of facets that make up a crystal form. In such studies, it is common to begin with the BFDH morphology prediction, which is a ranking of faces based on Dhkl values. GDIS provides a convenient means to quickly list (on the right-hand side of the surface dialog) a desired number of Dhkl ranked faces. By clicking on the Display morphology button, a predicted crystal habit based on the Dhkl values will be drawn in the active model. If Create morpgology is clicked, the same habit will be created in a new model window.
 
-Additional morphology predictions, based on calculated surface energy, can also be constructed. First the appropriate column in the surface list must be filled in eg by performing a calculation energy. This must be done for all faces of interest. The desired morphology can be selected in the Morphology type pulldown, and then the corresponding habit may be built with the Display or Create morphology buttons.
+Additional morphology predictions, based on calculated surface energy, can also be constructed. First the appropriate column in the surface list must be filled in, e.g., by performing an energy calculation. This must be done for all faces of interest. The desired morphology can be selected in the Morphology type pulldown, and then the corresponding habit may be built with the Display or Create morphology buttons.
 
-By default, GDIS sorts the new surface atoms by depth. However, an option is supplied that preserves the order the atoms were read in. 
+By default, GDIS sorts the new surface atoms by depth. However, an option is available that preserves the order the atoms were read in. 
 
 \h Dislocations
 
@@ -276,13 +276,14 @@ Some of the above file types can also contain animations. If a GULP input or res
 \h USPEX animation
 
 When opening an USPEX animation file, all the studied structures are loaded as animation frames. In the meantime, some graphs are automatically created. Instead of viewing each structure in an animation (which is possible), it is more practical to navigate through all by directly selecting the corresponding value (represented by a square symbol) on one of the graphs.
-The ALL graph contains all the structures energies plotted against the generation numbers. The BEST graph only shows the best structure of any given generation determined by fitness figure, or energy if the latter information is missing. The COMP_X graph shows the structure of lowest energy for each atomic composition of X (for variable composition calculation only). Finally the PATH graph shows each image structure of the best transition path for a VC-NEB calculation.
+
+The ALL graph contains all the structure energies plotted against the generation numbers. The BEST graph only shows the best structure of any given generation determined by fitness figure, or energy if the latter information is missing. The COMP_X graph shows the structure of lowest energy for each atomic composition of X (for variable composition calculations only). Finally the PATH graph shows each image structure of the best transition path for a VC-NEB calculation.
 
 \h Importing/Exporting Data
 
-In addition GDIS can load and display GEOMVIEW graphics files, although not all geometric primitives are supported at this time.
+In addition, GDIS can load and display GEOMVIEW graphics files, although not all geometric primitives are supported at this time.
 
-Also, graph data from a diffraction pattern or dynamics analysis can be exported in the form of space separated column data. This is suitable for loading into a spreadsheet or graphing program.
+Also, graph data from a diffraction pattern or dynamics analysis can be exported in the form of space-separated column data. This is suitable for loading into a spreadsheet or graphing program.
 
 %Topic 7. Acknowledgements
 
