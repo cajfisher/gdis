@@ -191,6 +191,10 @@ When a GULP input file is loaded, GDIS processes many of the keywords, option, a
 
 GAMESS is a computational code that permits \i ab-initio, semi-empirical, and density functional calculations to be performed. As before, it is often best to work from a GAMESS input file when performing calculations. However, The Tools->Computational->GAMESS dialog provides enough configuration options to permit single point or optimization runs with the desired accuracy level / basis set to be readily performed.
 
+\h Moldy
+
+Moldy is a multipurpose molecular dynamics code for performing simulations of rigid-ion, two-body systems in the microcanonical, canonical, and isobaric-isothermal ensembles. The Computation->Moldy dialog provides all options for writing control and system-specification (sys-spec) files. If the names of these two files are the same, the sys-spec data will be appended to the end of the control file. If a restart (save) file is specified, no sys-spec file will be written, as the control file will contain the name of the restart file to commence from. When loading a sys-spec file, bonds are only drawn between atoms within the same "species" (specified in the sys-spec file) using the normal GDIS bonding rules.
+
 \h VASP
 
 VASP (Vienna Ab initio Simulation Package) is a 3D-periodic, plane wave basis set based, computational software. The VASP interface in GDIS allows a user to set-up a VASP calculation from any model based on an extensive set of keywords. For each keyword, a tooltip short help is proposed including, when relevant, a reference to the official VASP documentation chapters (http://cms.mpi.univie.ac.at/vasp/vasp.pdf).
@@ -249,6 +253,7 @@ Each loaded file can contain one or more chemical structures, or models. These c
 \f GULP output             (.got, .gout)           -
 \f MARVIN input/restart    (.mar, .mvn, .mvn-r)   (.mar, .mvn, .mvn-r)
 \f MARVIN output           (.mot, .mvout .mvnout)  -
+\f Moldy input/restart     (.min, .sav)	           -
 \f MONTY                   (.cgf)                 (.cgf)
 \f MOPAC output            (.out)                  -
 \f NWCHEM                  (.nwin, nw)            (.nwout, nwot, .nwo)
