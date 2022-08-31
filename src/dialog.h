@@ -42,6 +42,9 @@ void dialog_child_set(gpointer, const gchar *, gpointer);
 
 void dialog_colour_new(GtkWidget *, gdouble *);
 
+void moldy_unit_dialog(struct model_pak *);
+void read_moldy_potentials(gchar *, struct model_pak *);
+
 /* deprec */
 /* cleanup control */
 void file_cleanup(void);
@@ -58,5 +61,3 @@ void gamess_dialog(void);
 void moldy_dialog(void);
 void monty_dialog(void);
 gint calculate_crystal_graph(struct model_pak * model);
-
-

@@ -41,7 +41,9 @@ gchar *property_lookup(gchar *, struct model_pak *);
 
 void gulp_init(gpointer);
 void gamess_init(gpointer);
+void moldy_init(gpointer);
 void free_vasp_out(gpointer);
 void free_uspex_out(gpointer);
 
-
+void atomtype_free(gpointer);
+void atomtype_data_free(GSList *);

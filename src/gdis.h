@@ -90,9 +90,19 @@ The GNU GPL can also be found at http://www.gnu.org
 #define ELCHARGE 1.60217733e-19
 #define AMU 1.6605402e-27
 #define AVOGADRO 6.0221367e23
+#define ANGST 1e-10
+#define EPS0 8.854187817e-12
 
+/* math functions */
+#define SQR(x) ((x) * (x))
 #define MAXIMUM(a,b) (((a) > (b)) ? (a) : (b))
 #define MINIMUM(a,b) (((a) < (b)) ? (a) : (b))
+
+/* Energy unit convertors for Moldy */
+#define TIME_KJ  (sqrt(AMU*AVOGADRO/1e3)*ANGST)
+#define TIME_KC  (sqrt(AMU*AVOGADRO/4184.0)*ANGST)
+#define TIME_EV  (sqrt(AMU/ELCHARGE)*ANGST)
+#define TIME_E2A (sqrt(AMU*PI*EPS0)*2e-5/ELCHARGE*ANGST)
 
 /* location of data file - TODO - IMPROVE ie rc file/scan etc */
 #ifdef __WIN32
@@ -213,6 +223,9 @@ DREIDING, GASTEIGER,
 GDIS_ELEM_START, GDIS_END
 };
 
+/* Energy units for Moldy */
+enum { KJMOL, KCAL, EV, E2A, OTHERS };
+
 /* Moldy unit types */
 enum { TIME_UNIT, LENGTH_UNIT, MASS_UNIT, CHARGE_UNIT };
 
@@ -279,10 +292,18 @@ enum {DRAW_OFF, DRAW_GDK, DRAW_GL};
 enum {MESH_POINTS, MESH_SPACING};
 
 /* marvin region types */
-enum {REGION1A, REGION2A, REGION1B, REGION2B, NONE};
+enum {REGION1A, REGION2A, REGION1B, REGION2B};
 
 /* selection modes */
 enum {CLEAN, START, UPDATE, STOP, ASSIGN, RECALL, RELEASE};
+
+/* Switches for atom list order in Moldy and DL_POLY */ /* Added by C. Fisher 2014 */
+enum { NONE, CATION_ANION, ANION_CATION, CHARGE_LOW2HIGH,
+       CHARGE_HIGH2LOW, SIZE_LOW2HIGH, SIZE_HIGH2LOW,
+       MASS_LOW2HIGH, MASS_HIGH2LOW, NAME_A2Z, NAME_Z2A };
+
+enum { ATOM_ORDER_TYPE_1, ATOM_ORDER_TYPE_2, ATOM_ORDER_TYPE_3, ATOM_ORDER_TYPE_4 };
+enum { MOL_ORDER_TYPE_1, MOL_ORDER_TYPE_2, MOL_ORDER_TYPE_3, MOL_ORDER_TYPE_4 };
 
 /*****************/
 /* MAIN INCLUDES */
@@ -301,4 +322,3 @@ enum {CLEAN, START, UPDATE, STOP, ASSIGN, RECALL, RELEASE};
 #if GTK_EXTRA
 #include <gtkextra/gtksheet.h>
 #endif
-

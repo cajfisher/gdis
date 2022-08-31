@@ -1,4 +1,3 @@
-
 /**************/
 /* prototypes */
 /**************/
@@ -20,6 +19,8 @@ void gulp_data_free(struct model_pak *);
 void gulp_files_free(struct model_pak *);
 void gulp_data_copy(struct model_pak *, struct model_pak *);
 void gulp_extra_copy(struct model_pak *, struct model_pak *);
+
+void moldy_data_free(struct model_pak *);
 
 gint gulp_cosmo_points(gint, gint, gint);
 

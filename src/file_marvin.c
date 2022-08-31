@@ -500,7 +500,6 @@ while(!fgetline(fp, line))
       }
     else
       {
-/* Added by C. Fisher 2004 */
       if (g_ascii_strncasecmp(line, "lattice", 7) == 0)
         {
         buff = tokenize(line, &num_tokens);
@@ -537,7 +536,6 @@ while(!fgetline(fp, line))
         model->construct_pbc = TRUE;
         }
 
-      /* Added by C. Fisher 2004 */
       if (g_ascii_strncasecmp(line, "surfvec", 7) == 0)
         {
         if (!fgetline(fp, line))
@@ -560,7 +558,6 @@ while(!fgetline(fp, line))
     }
   }
 
-/* Added by C. Fisher 2004 */
 for(i=0;i<9;i++)
   model->latmat[i] *= lat_mult;
 
@@ -571,7 +568,6 @@ model->basename = parse_strip(filename);
 
 model_prep(model);
 
-/* Added by C. Fisher 2004 */
 if( model->image_limit[1] != 1.0 ||  model->image_limit[3] != 1.0)
   {
   space_make_images(CREATE, model);

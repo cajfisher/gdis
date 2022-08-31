@@ -31,11 +31,11 @@ gchar *atom_label; /* NEW - replacement for label[] */
 gchar *atom_type;  /* NEW - FF type */
 
 /*VZ*/
-gdouble atom_nmr_shift;//isotropic shift
-gdouble atom_nmr_aniso;//CSA anisotropy
-gdouble atom_nmr_asym;//CSA assymetry
-gdouble atom_nmr_cq;//EFG Cq
-gdouble atom_nmr_efgasym;//EFG assymetry
+gdouble atom_nmr_shift;   // isotropic shift
+gdouble atom_nmr_aniso;   // CSA anisotropy
+gdouble atom_nmr_asym;    // CSA assymetry
+gdouble atom_nmr_cq;      // EFG Cq
+gdouble atom_nmr_efgasym; // EFG assymetry
 
 /* TODO - data structure that contains res_name and res_no and each atom points to this */
 gchar *res_name;   /* NEW - residue name */
@@ -291,3 +291,17 @@ GSList *connect_fragment_get(struct core_pak *,
                              struct model_pak *);
 GSList *connect_neighbours(struct core_pak *) ;
 
+gint compare_species(gpointer, gpointer);
+gint compare_atoms (gpointer, gpointer);
+gint compare_molecules (gpointer, gpointer);
+void sort_molecule_cores (struct model_pak *);
+gint internal_atom_sort (gpointer, gpointer);
+gint count_visible_cores(GSList *);
+double minimum_distance(gdouble *, gdouble *, struct model_pak *);
+struct bond_pak *new_bond(struct core_pak *, struct core_pak *, gint, gint, gdouble *);
+gpointer connect_bond_test(gdouble *, gdouble, struct core_pak *, struct core_pak *, struct model_pak *);
+void calc_centroid(gdouble *, GSList *);
+GSList *visible_cores(GSList *);
+GSList *visible_bonds(GSList *);
+gint calc_boundary_atoms(struct core_pak *, struct model_pak *);
+GSList *boundary_atom_list(struct core_pak *, struct model_pak *, gint);

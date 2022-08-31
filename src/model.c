@@ -264,6 +264,10 @@ gulp_init(&data->gulp);
 /* GAMESS defaults */
 gamess_init(&data->gamess);
 
+/* MOLDY defaults */
+moldy_init(&data->moldy);
+data->atom_types = NULL;
+
 data->abinit.energy = data->abinit.max_grad = data->abinit.rms_grad = 0.0;
 
 data->nwchem.energy = data->nwchem.max_grad = data->nwchem.rms_grad = 0.0;
@@ -951,6 +955,37 @@ void gamess_data_free(struct model_pak *model)
 g_free(model->gamess.title);
 g_free(model->gamess.temp_file);
 g_free(model->gamess.out_file);
+}
+
+/*************************/
+/*  free atom type       */
+/*************************/
+void atomtype_free(gpointer data)
+{
+struct atomtype_pak *site = data;
+
+g_free(site->label);
+g_free(site);
+}
+
+/************************************/
+/*  free atom type data             */
+/************************************/
+void atomtype_data_free(GSList *sitetypes)
+{
+GSList *list;
+struct atomtype_pak *sitetype;
+
+/* free a list of sitetype pak structures */
+list = sitetypes;
+while (list)
+  {
+  sitetype = list->data;
+  list = g_slist_next(list);
+
+  printf("super\n");
+  atomtype_free(sitetype);
+  }
 }
 
 /***********************************/

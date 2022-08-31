@@ -37,7 +37,6 @@ The GNU GPL can also be found at http://www.gnu.org
 #define DEBUG_MORE 0
 #define MAX_KEYS 15
 
-/* Added by C. Fisher 2004 */
 #define CELL_LENGTH 10.0 /* Box length for non-periodic system */
 
 /* main structures */
@@ -277,7 +276,7 @@ for (;;)
         data->sginfo.spacename = g_strdup_printf("%d",data->sginfo.spacenum);
         } */
 
-/* Cell choice options added by C. Fisher 2004 */
+/* Cell choice options */
 /* TODO Read SYM MAT data */
       if (g_ascii_strncasecmp("qua", *(buff+i), 3) == 0) /* QUALIFIER secondary keyword */
         {
@@ -637,7 +636,6 @@ for (;;)
 /* enough tokens */
 /* Use scattering element in lookup, as label not always element symbol */
 /* otherwise check if first item is a valid atom type */
-/* C. Fisher 2004 */
       if (column[4] != -1)
         {
         symbol = g_strdup(*(buff+column[4]));

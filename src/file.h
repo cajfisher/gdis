@@ -62,6 +62,7 @@ gint code;
 extern struct keyword_pak keywords[];
 
 /* main */
+gint ascii_check(const gchar *);
 void file_init(void);
 void file_free(void);
 gint fgetline(FILE *, gchar *);
@@ -101,7 +102,6 @@ gint write_gmf(gchar *, struct model_pak *);
 gint write_planes(gchar *, struct model_pak *);
 gint write_marvin(gchar *, struct model_pak *);
 gint write_xml(gchar *, struct model_pak *);
-gint write_xsf(gchar *, struct model_pak *);
 gint write_xtl(gchar *, struct model_pak *);
 gint write_xyz(gchar *, struct model_pak *);
 gint write_gms(gchar *, struct model_pak *);
@@ -120,6 +120,9 @@ gint write_dlp(gchar *, struct model_pak *);
 gint write_gromacs(gchar *, struct model_pak *);
 gint write_castep_cell(gchar *, struct model_pak *);
 gint write_meta(gchar *, struct model_pak *);
+gint write_moldy_sys(gchar *, struct model_pak *);
+gint write_moldy_potentials(gchar *, struct model_pak *);
+gint write_moldy_control(gchar *, struct model_pak *);
 
 void write_povray_colour_textures(FILE *, struct model_pak *, int);
 void write_sfc_data(FILE *);
@@ -143,7 +146,6 @@ gint read_marvin(gchar *, struct model_pak *);
 gint read_mvnout(gchar *, struct model_pak *);
 gint read_sout(gchar *, struct model_pak *);
 gint read_xml(gchar *, struct model_pak *);
-gint read_xsf(gchar *, struct model_pak *);
 gint read_xtl(gchar *, struct model_pak *);
 gint read_xyz(gchar *, struct model_pak *);
 gint read_using_babel(gchar *, struct model_pak *);
@@ -191,7 +193,6 @@ gint read_qe_out_frame(FILE *, struct model_pak *);
 gint read_xyz_frame(FILE *, struct model_pak *);
 gint read_dlpoly_frame(FILE *, struct model_pak *);
 gint read_dmol_frame(FILE *, struct model_pak *);
-gint read_xsf_frame(FILE *, struct model_pak *);
 
 /*NEW: track/update frames (TODO)*/
 gint update_frame_uspex(gint idx,struct model_pak *model);
@@ -225,3 +226,5 @@ gint fdf_species_index(gchar *, GSList *);
 
 GSList *gromacs_read_ff(const gchar *);
 
+gchar *construct_filename(gchar *);
+void change_basename(GtkWidget *, struct model_pak *);

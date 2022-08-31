@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2003 by Craig Andrew James Fisher
+Copyright (C) 2022 by Craig Andrew James Fisher
 Copyright (C) 2000 by Sean David Fleming
 
 sean@ivec.org
@@ -139,3 +139,26 @@ quat_matrix(rot, quat);
 vecmat(rot, vec);
 }
 
+/********************************/
+/* Calculate random quaternions */
+/********************************/
+void quat_random(gdouble *quat)
+{
+gdouble phi, cos_theta, sin_theta, st2;
+
+srand(time(NULL)+rand());   /* Randomly re-seed random generator */
+
+/* Phi is uniform on [0, 2pi) */
+phi = 2.0*PI*(rand() % 1000)/1000;
+
+/* 0 <= theta < pi, p(theta)=sin() */
+cos_theta = 1.0 - 2.0*(rand() % 1000)/1000.0;
+
+sin_theta = sqrt(1.0 - SQR(cos_theta));
+
+quat[0] = sqrt((rand() % 1000/1000.0));
+st2 = sqrt(1.0 - SQR(quat[0]));
+quat[1] = st2*sin_theta*sin(phi);
+quat[2] = st2*sin_theta*cos(phi);
+quat[3] = st2*cos_theta;
+}

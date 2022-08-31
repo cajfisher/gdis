@@ -615,7 +615,7 @@ g_free(text);
 /*******************/
 void file_cleanup(void)
 {
-/* NB: since the tree store is independant of the model's geom list */
+/* NB: since the tree store is independent of the model's geom list */
 /* it must be completely removed (and then restored) with the dialog */
 gtk_list_store_clear(file_path_ts);
 gtk_list_store_clear(file_name_ts);
@@ -626,6 +626,170 @@ file_path_tv = NULL;
 file_path_ts = NULL;
 file_name_tv = NULL;
 file_name_ts = NULL;
+}
+
+/* file tree for moldy potential files */
+static void potential_file_activate(GtkTreeView *treeview, GtkTreePath *treepath)
+{
+gchar *text;
+GtkTreeIter iter;
+GtkTreeModel *treemodel;
+
+treemodel = gtk_tree_view_get_model(treeview);
+gtk_tree_model_get_iter(treemodel, &iter, treepath);
+
+gtk_tree_model_get(treemodel, &iter, FILE_PATH, &text, -1);
+
+read_moldy_potentials(text, NULL);
+}
+
+/*************************************************/
+/* Moldy file load widget                        */
+/*************************************************/
+void
+moldy_load_dialog(gchar *title,
+                  gint type,
+                  gpointer secondary_handler(gchar *, struct model_pak *),
+                  struct model_pak *data, gint filter)
+{
+gpointer dialog;
+GList *elist=NULL;
+GSList *flist=NULL;
+GtkWidget *window, *swin, *hbox, *combo, *label;
+GtkCellRenderer *renderer;
+GtkTreeViewColumn *column;
+GtkTreeSelection *select;
+struct file_pak *fdata;
+
+elist = NULL;
+flist = sysenv.file_list;
+while(flist != NULL)
+  {
+  fdata = (struct file_pak *) flist->data;
+/* include in menu? */
+  if (fdata->group == filter)
+    elist = g_list_append(elist, fdata->label);
+  flist = g_slist_next(flist);
+  }
+/* get a dialog if possible */
+dialog = dialog_request(FILE_SELECT, "File dialog", NULL, NULL, NULL);
+if (!dialog)
+  return;
+window = dialog_window(dialog);
+
+/* make and set up the dialog window */
+gtk_window_set_title(GTK_WINDOW(window), title);
+gtk_window_set_default_size(GTK_WINDOW(window), 600, 400);
+gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
+gtk_container_set_border_width(GTK_CONTAINER(GTK_BOX(GTK_DIALOG(window)->vbox)),10);
+
+/* TOP ROW - cwd printed */
+hbox = gtk_hbox_new(FALSE,0);
+gtk_box_pack_start(GTK_BOX(GTK_DIALOG(window)->vbox),hbox,FALSE,FALSE,0);
+label = gtk_label_new("Current path: ");
+gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
+
+curr_path = gtk_label_new("dummy");
+gtk_box_pack_start(GTK_BOX(hbox), curr_path, FALSE, FALSE, 0);
+
+/* SECOND ROW - sub-directory & file listings */
+hbox = gtk_hbox_new(FALSE, PANEL_SPACING);
+gtk_box_pack_start(GTK_BOX(GTK_DIALOG(window)->vbox), hbox, TRUE, TRUE, 0);
+gtk_container_set_border_width(GTK_CONTAINER(hbox), PANEL_SPACING);
+
+/* scrolled model pane */
+swin = gtk_scrolled_window_new(NULL, NULL);
+gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW (swin),
+                               GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+gtk_box_pack_start(GTK_BOX(hbox), swin, TRUE, TRUE, 0);
+/* path treestore/treeview */
+file_path_ts = gtk_list_store_new(FILE_PATH_NCOLS, G_TYPE_STRING);
+file_path_tv = gtk_tree_view_new_with_model(GTK_TREE_MODEL(file_path_ts));
+gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(swin), file_path_tv);
+renderer = gtk_cell_renderer_text_new();
+column = gtk_tree_view_column_new_with_attributes("Tree", renderer, "text", FILE_PATH, NULL);
+gtk_tree_view_append_column(GTK_TREE_VIEW(file_path_tv), column);
+
+/* NB: use this method instead of selections to handle events */
+/* as selections will core dump if the handler clears the store */
+g_signal_connect(file_path_tv, "row_activated", G_CALLBACK(file_path_activate), NULL);
+
+/* scrolled model pane */
+swin = gtk_scrolled_window_new(NULL, NULL);
+gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW (swin),
+                               GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+gtk_box_pack_start(GTK_BOX(hbox), swin, TRUE, TRUE, 0);
+
+/* filename treestore/treeview */
+file_name_ts = gtk_list_store_new(FILE_NAME_NCOLS, G_TYPE_STRING);
+file_name_tv = gtk_tree_view_new_with_model(GTK_TREE_MODEL(file_name_ts));
+gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(swin), file_name_tv);
+renderer = gtk_cell_renderer_text_new();
+column = gtk_tree_view_column_new_with_attributes("Files", renderer, "text",
+FILE_NAME, NULL);
+gtk_tree_view_append_column(GTK_TREE_VIEW(file_name_tv), column);
+/* set up the selection handler */
+select = gtk_tree_view_get_selection(GTK_TREE_VIEW(file_name_tv));
+gtk_tree_selection_set_mode(select, GTK_SELECTION_BROWSE);
+/* single click - update entry */
+g_signal_connect(G_OBJECT(select), "changed",
+                 G_CALLBACK(cb_file_name_changed),
+                 NULL);
+
+/* double click - automatic load */
+g_signal_connect(file_name_tv, "row_activated", G_CALLBACK(potential_file_activate), NULL);
+
+/* THIRD ROW - filename currently selected & file extension filter */
+hbox = gtk_hbox_new(FALSE, PANEL_SPACING);
+gtk_box_pack_start(GTK_BOX(GTK_DIALOG(window)->vbox), hbox, FALSE, FALSE, 0);
+
+/* filename */
+file_name = gtk_entry_new();
+gtk_box_pack_start(GTK_BOX(hbox), file_name, TRUE, TRUE, 0);
+if (data->moldy.lib_file)
+  gtk_entry_set_text(GTK_ENTRY(file_name), data->moldy.lib_file);
+
+gtk_entry_set_editable(GTK_ENTRY(file_name), TRUE);
+
+/* hook a <CR> event to the load action */
+g_signal_connect(GTK_OBJECT(file_name), "activate",
+                 GTK_SIGNAL_FUNC(file_event_handler), secondary_handler);
+
+/* combo box for file filter */
+combo = gtk_combo_new();
+gtk_entry_set_editable(GTK_ENTRY(GTK_COMBO(combo)->entry), FALSE);
+gtk_combo_set_popdown_strings(GTK_COMBO(combo), elist);
+
+/* set the currently selected type (BEFORE the changed event is connected) */
+fdata = get_file_info(GINT_TO_POINTER(filter), BY_FILE_ID);
+if (fdata)
+  gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(combo)->entry), fdata->label);
+
+gtk_box_pack_start(GTK_BOX (hbox), combo, TRUE, TRUE, 0);
+g_signal_connect(GTK_OBJECT(GTK_COMBO(combo)->entry), "changed",
+                 GTK_SIGNAL_FUNC(type_change), NULL);
+gtk_widget_set_size_request(combo, 6*sysenv.gtk_fontsize, -1);
+
+/* terminating buttons */
+switch (type)
+  {
+  case FILE_LOAD:
+    gui_stock_button(GTK_STOCK_OPEN, file_event_handler, secondary_handler,
+                       GTK_DIALOG(window)->action_area);
+    break;
+  case FILE_SAVE:
+    gui_stock_button(GTK_STOCK_SAVE, file_event_handler, secondary_handler,
+                       GTK_DIALOG(window)->action_area);
+    break;
+  }
+
+gui_stock_button(GTK_STOCK_CANCEL, dialog_destroy, dialog,
+                   GTK_DIALOG(window)->action_area);
+
+/* all done */
+gtk_widget_show_all(window);
+sysenv.file_type = filter;
+update_file_pane();
 }
 
 /*************************************************/
@@ -866,4 +1030,3 @@ gtk_widget_show(csd);
 g_signal_connect(GTK_OBJECT(w), "destroy", GTK_SIGNAL_FUNC(destroy_widget), csd);
 */
 }
-

@@ -427,7 +427,6 @@ for (mlist=model->moles ; mlist ; mlist=g_slist_next(mlist))
 /**********************************************/
 /* duplicate a model's cores & shells exactly */
 /**********************************************/
-/* TODO - put in coords.c ? */
 void copy_atom_data(struct model_pak *src, struct model_pak *dest)
 {
 GSList *list;

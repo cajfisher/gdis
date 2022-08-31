@@ -1516,6 +1516,7 @@ static GtkItemFactoryEntry menu_items[] =
   { "/Tools/Computation/Diffraction...",      NULL, gui_diffract_dialog, 0, NULL },
   { "/Tools/Computation/GULP...",             NULL, gulp_dialog, 0, NULL },
   { "/Tools/Computation/GAMESS...",           NULL, gamess_dialog, 0, NULL },
+  { "/Tools/Computation/Moldy...",            NULL, moldy_dialog, 0, NULL },
   { "/Tools/Computation/Monty...",            NULL, monty_dialog, 0, NULL },
   { "/Tools/Computation/SIESTA...",           NULL, gui_siesta_dialog, 0, NULL },
   { "/Tools/Computation/VASP...",             NULL, gui_vasp_dialog, 0, NULL },

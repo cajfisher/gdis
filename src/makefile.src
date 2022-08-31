@@ -10,9 +10,9 @@ SRC =	main.c model.c coords.c connect.c matrix.c module.c task.c \
 	ff.c ff_gulp.c test.c \
 	file.c file_cif.c file_gulp.c file_gmf.c file_marvin.c file_xtl.c \
 	file_arc.c file_xyz.c file_fdf.c file_vasp.c file_gms.c file_diff.c file_xml.c \
-	file_abinit.c file_pdb.c file_povray.c file_nwchem.c file_castep.c file_xsf.c \
+	file_abinit.c file_pdb.c file_povray.c file_nwchem.c file_castep.c \
 	file_gauss.c file_qe.c file_rietica.c file_geomview.c file_cssr.c file_cel.c \
-	file_dmol.c file_dlpoly.c file_bgf.c file_cgf.c file_dlp.c \
+	file_dmol.c file_dlpoly.c file_bgf.c file_cgf.c file_dlp.c file_moldy.c \
 	file_gromacs.c file_meta.c file_mol2.c file_uspex.c
 
 ifeq ($(USE_GUI), YES)
@@ -22,7 +22,7 @@ SRC := $(SRC) gui_main.c gui_canvas.c gui_shorts.c \
 	gui_edit.c gui_surface.c gui_analysis.c gui_defect.c \
 	gui_molsurf.c gui_diffract.c gui_gms.c gui_library.c gui_setup.c \
 	gui_gperiodic.c plots.c gui_plots.c gui_space.c gui_measure.c gui_symmetry.c gui_zmatrix.c \
-	gui_dialog.c gui_tree.c gui_task.c gui_help.c gui_monty.c gui_job.c \
+	gui_dialog.c gui_tree.c gui_task.c gui_help.c gui_moldy.c gui_monty.c gui_job.c \
         dock.c image.c 
 endif
 

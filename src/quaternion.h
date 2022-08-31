@@ -27,4 +27,4 @@ void quat_concat_euler(gdouble *, gint, gdouble);
 void quat_rotate(gdouble *, gdouble *);
 void quat_matrix(gdouble *, gdouble *);
 void quat_convert_matrix(gdouble *, gdouble *);
-
+void quat_random(gdouble *);

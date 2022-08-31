@@ -197,6 +197,9 @@ gchar *mpirun_path;
 gchar *monty_exe;
 gchar *monty_path;
 
+gchar *moldy_exe;
+gchar *moldy_path;
+
 /* filetype filters */
 gint file_type;
 gint babel_type;
@@ -315,6 +318,11 @@ GSList *dialog_list;
 struct model_pak *select_source;
 /* rendering */
 struct render_pak render;
+
+/* Atom ordering for output */
+gint atom_order[4];
+/* Molecule ordering for output */
+gint molecule_order[4];
 
 /* task handling */
 GSList *task_list;
@@ -983,6 +991,138 @@ gdouble max_grad;
 gdouble rms_grad;
 };
 
+/* Moldy structures */
+/**********************************/
+/* structure for moldy potentials */
+/**********************************/
+struct pot_pak
+{
+gchar *site1_label;
+gdouble site1_charge;
+gchar *site2_label;
+gdouble site2_charge;
+gdouble parm[8];
+};
+
+/*********************************/
+/* md sub-structure (atom types) */
+/*********************************/
+struct atomtype_pak
+{
+gchar *label;
+guint id;
+gdouble mass;
+gdouble charge;
+};
+
+/****************************/
+/* md sub-structure (sites) */
+/****************************/
+struct site_pak
+{
+struct atomtype_pak *type;
+gdouble x[3];
+GSList *bonds;
+};
+
+/*********************************/
+/* moldy sub-structure (species) */
+/*********************************/
+struct moldyspec_pak
+{
+gchar *name;
+guint num_mols;
+GSList *sites;
+GSList *mols;
+gboolean framework;
+};
+
+/**************/
+/* moldy data */
+/**************/
+struct moldy_pak
+{
+gboolean no_exec;
+gchar *title;
+gdouble cpu_limit;
+gdouble temperature;
+gdouble pressure;
+gdouble mass_parm;
+/* simulation timing */
+gdouble deltat;
+gint nsteps;
+/* simulation initiation */
+gboolean latt_start;
+gboolean text_save;
+gdouble density;
+/* element/FF data */
+gboolean strict;
+gboolean surf;
+gint const_temp;
+gint const_press;
+gint strain_mask;
+gboolean set_framework;
+gdouble ttmass;
+gdouble rtmass;
+gdouble subcell;
+gdouble energy_unit;
+gdouble time_unit;
+gdouble length_unit;
+gdouble charge_unit;
+gdouble mass_unit;
+gint pot_type;
+GtkWidget *pot_label;
+gint num_mols;
+GSList *species;
+GSList *pots;
+/* cutoffs and ewald sum  */
+gboolean ewald;
+gboolean auto_cutoff;
+GtkWidget *cutoff_frame; /* Hack */
+gboolean real_only;
+gdouble cutoff;
+gdouble alpha;
+gdouble kcutoff;
+gdouble ewald_accuracy;
+/* rdf calcs  */
+gint rdf_begin;
+gint rdf_int;
+gint rdf_out;
+gdouble rdf_limit;
+gint nbins;
+/* timing and output */
+gint scale_int;
+gint scale_end;
+gint scale_options;
+gint dump_level;
+gint dump_begin;
+gint dump_int;
+gint maxdumps;
+gint av_start;
+gboolean av_reset;
+gint av_int;
+gint roll_int;
+gint print_int;
+gint backup_int;
+gboolean xdr;
+/* filename control */
+gchar *control_file;
+gchar *sysspec_file;
+gchar *lib_file;
+gchar *lib_dir;
+GtkWidget *lib_file_entry;
+gchar *out_file;
+gchar *save_file;
+gchar *restart_file;
+gchar *restart_dir;
+gchar *dump_file;
+gchar *backup_file;
+gchar *temp_file;
+/* others */
+gdouble seed;
+guint page_width;
+guint page_length;
+};
 /***************/
 /* NWChem data */
 /***************/
@@ -1195,6 +1335,7 @@ GSList *transform_list;
 GSList *frame_data_list;
 GSList *waypoint_list;
 GSList *undo_list;
+GSList *atom_types;
 gpointer graph_active;
 gpointer graph_ui_active;
 gpointer picture_active;
@@ -1302,6 +1443,8 @@ struct diffract_pak diffract;
 struct surface_pak surface;
 /* NEW: Monty settings */
 struct monty_pak monty;
+/* Moldy settings */
+struct moldy_pak moldy;
 
 /* plots */
 gint plots;

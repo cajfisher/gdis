@@ -116,8 +116,6 @@ GSList *list, *list2;
 struct mol_pak *mol;
 struct core_pak *core;
 
-printf("Found %d molecules.\n", g_slist_length(model->moles));
-
 for (list=model->moles ; list ; list=g_slist_next(list))
   {
   mol = list->data;
@@ -525,9 +523,9 @@ memcpy(copy, bond, sizeof(struct bond_pak));
 return(copy);
 }
 
-/*************************************************/
-/* check for and creates if sucessful a new bond */
-/*************************************************/
+/***********************************************/
+/* check for and create new bond if successful */
+/***********************************************/
 gpointer connect_bond_test(gdouble *x, gdouble r2cut,
                            struct core_pak *c1, struct core_pak *c2,
                            struct model_pak *model)
@@ -544,6 +542,13 @@ g_assert(model != NULL);
 ARR3SET(r, x);
 vecmat(model->latmat, r);
 r2 = VEC3MAGSQ(r);
+
+if (model->id == MOLDY || model->id == MOLDY_RES)
+  {
+  /* Check if cores belong to same species */
+  if (c1->molecule != c2->molecule)
+    return(NULL);
+  }
 
 if (r2 < r2cut)
   {
@@ -635,7 +640,7 @@ core1->atom_label, core1->x[0], core1->x[1], core1->x[2]);
 zone = zone_get(core1->x, model->zone_array);
 locality = zone_area_cores(1, zone, model->zone_array);
 
-/* setup for compare */
+/* set up for compare */
 r1 = core1->bond_cutoff;
 ARR3SET(x1, core1->x);
 
@@ -649,7 +654,7 @@ for (list=locality ; list ; list=g_slist_next(list))
   if (core1 > core2)
     continue;
 
-/* calc bond cutoff*/
+/* calc bond cutoff */
   r2cut = r1 + core2->bond_cutoff;
   r2cut += BOND_FUDGE*r2cut;
   r2cut *= r2cut;

@@ -1053,3 +1053,359 @@ for (list=data->cores ; list ; list=g_slist_next(list))
 g_slist_free(data->cores);
 data->cores = NULL;
 }
+gint count_visible_cores(GSList *cores)
+{
+gint k;
+struct core_pak *core;
+GSList *list;
+
+k = g_slist_length(cores);
+
+for (list=cores ; list ; list=g_slist_next(list))
+  {
+  core = (struct core_pak *) list->data;
+  if (core->status & (DELETED | HIDDEN))
+     k--;
+  }
+
+return(k);
+}
+
+#define DEBUG_COMPARE_ATOM_PROPS 0
+gint compare_atom_prop(struct core_pak *s1, struct core_pak *s2, gint order)
+{
+struct model_pak *data;
+struct elem_pak elem_data;
+gint code1, code2;
+gint elem_no1, elem_no2;
+gdouble q1, q2, radius1, radius2;
+
+data = sysenv.active_model;
+
+if (s1->atom_code)
+  code1 = s1->atom_code;
+else
+  code1 = elem_symbol_test (s1->atom_label);
+q1 = atom_charge(s1);
+get_elem_data (code1, &elem_data, data);
+radius1 = elem_data.vdw;
+elem_no1 = elem_data.number;
+
+if (s2->atom_code)
+  code2 = s2->atom_code;
+else
+  code2 = elem_symbol_test (s2->atom_label);
+q2 = atom_charge(s2);
+get_elem_data (code2, &elem_data, data);
+radius2 = elem_data.vdw;
+elem_no2 = elem_data.number;
+
+#if DEBUG_COMPARE_ATOM_PROPS
+puts("-------");
+printf("Atom %d: %s %f %f\n", code1, s1->atom_label, q1, radius1);
+printf("Atom %d: %s %f %f\n", code2, s2->atom_label, q2, radius2);
+#endif
+
+/* Charge order */
+if (order == CATION_ANION)
+  {
+  /* Cations before anions */
+  if (q1 < 0 && q2 > 0)
+    return (1);
+  else if (q1 > 0 && q2 < 0)
+    return (-1);
+  }
+else if (order == ANION_CATION)
+  {
+  /* Anions before cations */
+  if (q1 > 0 && q2 < 0)
+    return (1);
+  else if (q1 < 0 && q2 > 0)
+    return (-1);
+  }
+else if (order == CHARGE_HIGH2LOW)
+  {
+  /* High charge before low charge */
+  if (fabs (q1) < fabs (q2))
+    return (1);
+  else if (fabs (q1) > fabs (q2))
+    return (-1);
+  }
+else if (order == CHARGE_LOW2HIGH)
+  {
+  /* Low charge before high charge */
+  if (fabs (q1) > fabs (q2))
+    return (1);
+  else if (fabs (q1) < fabs (q2))
+    return (-1);
+  }
+/* Size order */
+else if (order == SIZE_HIGH2LOW)
+  {
+  /* Large ions before small ions */
+  if (radius1 < radius2)
+    return(1);
+  else if (radius1 > radius2)
+    return(-1);
+  }
+else if (order == SIZE_LOW2HIGH)
+  {
+  /* Small ions before large ions */
+  if (radius1 > radius2)
+    return(1);
+  else if (radius1 < radius2)
+    return(-1);
+  }
+/* Weight order */
+else if (order == MASS_HIGH2LOW)
+  {
+  /* Heavy atoms before light atoms */
+  if (elem_no1 < elem_no2)
+    return(1);
+  else if (elem_no1 > elem_no2)
+    return(-1);
+  }
+else if (order == MASS_LOW2HIGH)
+  {
+  /* Light atoms before heavy atoms */
+  if (elem_no1 > elem_no2)
+    return(1);
+  else if (elem_no1 < elem_no2)
+    return(-1);
+  }
+/* Alphabetical order */
+else if (order == NAME_A2Z)
+  {
+  if (g_strcmp0(s1->atom_label, s2->atom_label) > 0)
+    return(1);
+  else if (g_strcmp0(s1->atom_label, s2->atom_label) < 0)
+    return(-1);
+  }
+else if (order == NAME_Z2A)
+  {
+  if (g_strcmp0(s1->atom_label, s2->atom_label) < 0)
+    return(1);
+  else if (g_strcmp0(s1->atom_label, s2->atom_label) > 0)
+    return(-1);
+  }
+
+return(0);
+}
+
+#define DEBUG_COMPARE_PROPERTIES 0
+gint compare_mol_prop(struct moldyspec_pak *s1, struct moldyspec_pak *s2, gint order)
+{
+gchar *name1, *name2;
+gdouble mass1=0, mass2=0, q1=0, q2=0;
+gint num_atoms1=0, num_atoms2=0;
+struct atomtype_pak *type;
+struct site_pak *site=NULL;
+GSList *list;
+
+name1 = g_strdup(s1->name);
+num_atoms1 = g_slist_length(s1->sites);
+for (list = s1->sites; list; list = g_slist_next(list))
+    {
+    site = (struct site_pak *) list->data;
+    type = site->type;
+    mass1 += type->mass;
+    q1 += type->charge;
+    }
+
+name2 = g_strdup(s2->name);
+num_atoms2 = g_slist_length(s2->sites);
+for (list = s2->sites; list; list = g_slist_next(list))
+    {
+    site = (struct site_pak *) list->data;
+    type = site->type;
+    mass2 += type->mass;
+    q2 += type->charge;
+    }
+
+/* Charge order */
+if (order == CATION_ANION)
+  {
+  /* Cations before anions */
+  if (q1 < 0 && q2 > 0)
+    return (1);
+  else if (q1 > 0 && q2 < 0)
+    return (-1);
+  }
+else if (order == ANION_CATION)
+  {
+  /* Anions before cations */
+  if (q1 > 0 && q2 < 0)
+    return (1);
+  else if (q1 < 0 && q2 > 0)
+    return (-1);
+  }
+else if (order == CHARGE_HIGH2LOW)
+  {
+  /* High charge before low charge */
+  if (fabs (q1) < fabs (q2))
+    return (1);
+  else if (fabs (q1) > fabs (q2))
+    return (-1);
+  }
+else if (order == CHARGE_LOW2HIGH)
+  {
+  /* Low charge before high charge */
+  if (fabs (q1) > fabs (q2))
+    return (1);
+  else if (fabs (q1) < fabs (q2))
+    return (-1);
+  }
+/* Size order */
+else if (order == SIZE_HIGH2LOW)
+  {
+  /* Large molecules before small molecules */
+  if (num_atoms1 < num_atoms2)
+    return(1);
+  else if (num_atoms1 > num_atoms2)
+    return(-1);
+  }
+else if (order == SIZE_LOW2HIGH)
+  {
+  /* Small molecules before large molecules */
+  if (num_atoms1 > num_atoms2)
+    return(1);
+  else if (num_atoms1 < num_atoms2)
+    return(-1);
+  }
+else if (order == MASS_HIGH2LOW)
+  {
+  /* Heavy molecules before light molecules */
+  if (mass1 < mass2)
+    return(1);
+  else if (mass1 > mass2)
+    return(-1);
+  }
+else if (order == MASS_LOW2HIGH)
+  {
+  /* Light molecules before heavy molecules */
+  if (mass1 > mass2)
+    return(1);
+  else if (mass1 < mass2)
+    return(-1);
+  }
+/* Alphabetical order */
+else if (order == NAME_A2Z)
+  {
+  if (g_strcmp0(name1, name2) > 0)
+    return(1);
+  else if (g_strcmp0(name1, name2) < 0)
+    return(-1);
+  }
+else if (order == NAME_Z2A)
+  {
+  if (g_strcmp0(name1, name2) < 0)
+    return(1);
+  else if (g_strcmp0(name1, name2) > 0)
+    return(-1);
+  }
+return(0);
+}
+
+#define DEBUG_COMPARE_ATOMS 0
+gint compare_atoms(gpointer ptr_atom1, gpointer ptr_atom2)
+{
+struct core_pak *s1 = ptr_atom1, *s2 = ptr_atom2;
+gint sum, result;
+
+sum = sysenv.atom_order[0] + sysenv.atom_order[1] +
+      sysenv.atom_order[2] + sysenv.atom_order[3];
+
+#if DEBUG_COMPARE_ATOMS
+printf("Sum: %d\n", sum);
+#endif
+
+if (sum == NONE)
+  {
+  result = internal_atom_sort(s1, s2);
+  }
+else
+  {
+  result = compare_atom_prop(s1, s2, sysenv.atom_order[0]);
+
+  if (result == 0 && sysenv.atom_order[1] != NONE)
+    result = compare_atom_prop(s1, s2, sysenv.atom_order[1]);
+  if (result == 0 && sysenv.atom_order[2] != NONE)
+    result = compare_atom_prop(s1, s2, sysenv.atom_order[2]);
+  if (result == 0 && sysenv.atom_order[3] != NONE)
+    result = compare_atom_prop(s1, s2, sysenv.atom_order[3]);
+  }
+
+return(result);
+}
+
+#define DEBUG_COMPARE_MOLS 0
+gint compare_molecules(gpointer ptr_mol1, gpointer ptr_mol2)
+{
+struct moldyspec_pak *s1 = ptr_mol1, *s2 = ptr_mol2;
+gint sum, result;
+
+sum = sysenv.atom_order[0] + sysenv.atom_order[1] +
+      sysenv.atom_order[2] + sysenv.atom_order[3];
+
+if (sum == NONE)
+  {
+  result = compare_mol_prop(s1, s2, MASS_LOW2HIGH);
+
+  if (result == 0)
+    result = compare_mol_prop(s1, s2, CHARGE_LOW2HIGH);
+  if (result == 0)
+    result = compare_mol_prop(s1, s2, CATION_ANION);
+  if (result == 0)
+    result = compare_mol_prop(s1, s2, SIZE_LOW2HIGH);
+  if (result == 0)
+    result = compare_mol_prop(s1, s2, NAME_A2Z);
+  }
+else
+  {
+  result = compare_mol_prop(s1, s2, sysenv.molecule_order[0]);
+
+  if (result == 0 && sysenv.molecule_order[1] != NONE)
+    result = compare_mol_prop(s1, s2, sysenv.molecule_order[1]);
+  if (result == 0 && sysenv.molecule_order[2] != NONE)
+    result = compare_mol_prop(s1, s2, sysenv.molecule_order[2]);
+  if (result == 0 && sysenv.molecule_order[3] != NONE)
+    result = compare_mol_prop(s1, s2, sysenv.molecule_order[3]);
+  }
+
+return(result);
+}
+
+/*********************************************************************/
+/* sort cores in molecules into specified order                      */
+/*********************************************************************/
+void sort_molecule_cores(struct model_pak *model)
+{
+GSList *list;
+struct mol_pak *mol;
+
+for (list=model->moles ; list ; list=g_slist_next(list))
+  {
+  mol = list->data;
+
+  mol->cores = g_slist_sort(mol->cores, (gpointer) compare_atoms);
+  }
+}
+
+gint internal_atom_sort(gpointer ptr_atom1, gpointer ptr_atom2)
+{
+struct core_pak *s1 = ptr_atom1, *s2 = ptr_atom2;
+gint result;
+
+result = compare_atom_prop(s1,s2,MASS_LOW2HIGH);
+
+if (result == 0)
+  result = compare_atom_prop(s1,s2,CHARGE_LOW2HIGH);
+if (result == 0)
+  result = compare_atom_prop(s1,s2,CATION_ANION);
+if (result == 0)
+  result = compare_atom_prop(s1,s2,SIZE_LOW2HIGH);
+if (result == 0)
+  result = compare_atom_prop(s1,s2,NAME_A2Z);
+
+return(result);
+}
