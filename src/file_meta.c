@@ -40,11 +40,9 @@ extern struct elem_pak elements[];
 /****************************************************************/
 void meta_parse_units(gchar **value, gchar **units, gchar *source)
 {
-gint num_tokens;
 gchar **buff;
 
 buff = g_strsplit(source, " ", 2);
-buff = tokenize(source, &num_tokens);
 
 if (*buff)
   *value = g_strdup(*(buff));
