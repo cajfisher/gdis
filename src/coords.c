@@ -1313,7 +1313,8 @@ struct core_pak *s1 = ptr_atom1, *s2 = ptr_atom2;
 gint sum, result;
 
 sum = sysenv.atom_order[0] + sysenv.atom_order[1] +
-      sysenv.atom_order[2] + sysenv.atom_order[3];
+      sysenv.atom_order[2] + sysenv.atom_order[3] +
+      sysenv.atom_order[4];
 
 #if DEBUG_COMPARE_ATOMS
 printf("Sum: %d\n", sum);
@@ -1333,6 +1334,8 @@ else
     result = compare_atom_prop(s1, s2, sysenv.atom_order[2]);
   if (result == 0 && sysenv.atom_order[3] != NONE)
     result = compare_atom_prop(s1, s2, sysenv.atom_order[3]);
+  if (result == 0 && sysenv.atom_order[4] != NONE)
+    result = compare_atom_prop(s1, s2, sysenv.atom_order[4]);
   }
 
 return(result);
@@ -1344,8 +1347,9 @@ gint compare_molecules(gpointer ptr_mol1, gpointer ptr_mol2)
 struct moldyspec_pak *s1 = ptr_mol1, *s2 = ptr_mol2;
 gint sum, result;
 
-sum = sysenv.atom_order[0] + sysenv.atom_order[1] +
-      sysenv.atom_order[2] + sysenv.atom_order[3];
+sum = sysenv.molecule_order[0] + sysenv.molecule_order[1] +
+      sysenv.molecule_order[2] + sysenv.molecule_order[3] +
+      sysenv.molecule_order[4];
 
 if (sum == NONE)
   {
@@ -1370,6 +1374,8 @@ else
     result = compare_mol_prop(s1, s2, sysenv.molecule_order[2]);
   if (result == 0 && sysenv.molecule_order[3] != NONE)
     result = compare_mol_prop(s1, s2, sysenv.molecule_order[3]);
+  if (result == 0 && sysenv.molecule_order[4] != NONE)
+    result = compare_mol_prop(s1, s2, sysenv.molecule_order[4]);
   }
 
 return(result);
@@ -1396,16 +1402,16 @@ gint internal_atom_sort(gpointer ptr_atom1, gpointer ptr_atom2)
 struct core_pak *s1 = ptr_atom1, *s2 = ptr_atom2;
 gint result;
 
-result = compare_atom_prop(s1,s2,MASS_LOW2HIGH);
+result = compare_atom_prop(s1, s2, MASS_LOW2HIGH);
 
 if (result == 0)
-  result = compare_atom_prop(s1,s2,CHARGE_LOW2HIGH);
+  result = compare_atom_prop(s1, s2, CHARGE_LOW2HIGH);
 if (result == 0)
-  result = compare_atom_prop(s1,s2,CATION_ANION);
+  result = compare_atom_prop(s1, s2, CATION_ANION);
 if (result == 0)
-  result = compare_atom_prop(s1,s2,SIZE_LOW2HIGH);
+  result = compare_atom_prop(s1, s2, SIZE_LOW2HIGH);
 if (result == 0)
-  result = compare_atom_prop(s1,s2,NAME_A2Z);
+  result = compare_atom_prop(s1, s2, NAME_A2Z);
 
 return(result);
 }

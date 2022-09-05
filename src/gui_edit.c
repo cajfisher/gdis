@@ -2749,7 +2749,7 @@ gui_direct_check("Version 5.2 or later", &sysenv.vasp_version52,
 
 hbox = gui_frame_hbox(" Species order when writing files ", FALSE, FALSE, box);
 /* Atom list ordering options */
-vbox = gui_frame_vbox("Atom order", FALSE, FALSE, hbox);
+vbox = gui_frame_vbox("Atom order filter", TRUE, TRUE, hbox);
 
 list = NULL;
 list = g_list_append(list, "None");
@@ -2766,7 +2766,7 @@ list = g_list_append(list, "Names Z to A");
 
 /* options */
 hbox1 = gtk_hbox_new(FALSE, 0);
-gtk_box_pack_start(GTK_BOX(vbox), hbox1, TRUE, TRUE, 0);
+gtk_box_pack_start(GTK_BOX(vbox), hbox1, FALSE, TRUE, 0);
 label = gtk_label_new("  1st  ");
 gtk_box_pack_start(GTK_BOX(hbox1), label, FALSE, FALSE, 0);
 select_entry(sysenv.atom_order[0], entry);
@@ -2775,13 +2775,13 @@ combo = gtk_combo_new();
 gtk_entry_set_editable(GTK_ENTRY(GTK_COMBO(combo)->entry), FALSE);
 gtk_combo_set_popdown_strings(GTK_COMBO(combo), list);
 gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(combo)->entry), entry->str);
-gtk_box_pack_start(GTK_BOX(hbox1), combo, FALSE, FALSE, 0);
+gtk_box_pack_start(GTK_BOX(hbox1), combo, TRUE, FALSE, 0);
 g_signal_connect(GTK_OBJECT(GTK_COMBO(combo)->entry), "changed",
                  GTK_SIGNAL_FUNC(event_atom_order_modify), (gpointer) combo);
 g_object_set_data(G_OBJECT(combo), "id", (gpointer) ATOM_ORDER_TYPE_1);
 
 hbox2 = gtk_hbox_new(FALSE, 0);
-gtk_box_pack_start(GTK_BOX(vbox), hbox2, FALSE, FALSE, 0);
+gtk_box_pack_start(GTK_BOX(vbox), hbox2, FALSE, TRUE, 0);
 label = gtk_label_new("  2nd  ");
 gtk_box_pack_start(GTK_BOX(hbox2), label, FALSE, FALSE, 0);
 
@@ -2791,13 +2791,13 @@ combo = gtk_combo_new();
 gtk_entry_set_editable(GTK_ENTRY(GTK_COMBO(combo)->entry), FALSE);
 gtk_combo_set_popdown_strings(GTK_COMBO(combo), list);
 gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(combo)->entry), entry->str);
-gtk_box_pack_start(GTK_BOX(hbox2), combo, FALSE, FALSE, 0);
+gtk_box_pack_start(GTK_BOX(hbox2), combo, TRUE, FALSE, 0);
 g_signal_connect(GTK_OBJECT(GTK_COMBO(combo)->entry), "changed",
                  GTK_SIGNAL_FUNC(event_atom_order_modify), (gpointer) combo);
 g_object_set_data(G_OBJECT(combo), "id", (gpointer) ATOM_ORDER_TYPE_2);
 
 hbox3 = gtk_hbox_new(FALSE, 0);
-gtk_box_pack_start(GTK_BOX(vbox), hbox3, FALSE, FALSE, 0);
+gtk_box_pack_start(GTK_BOX(vbox), hbox3, FALSE, TRUE, 0);
 label = gtk_label_new("  3rd  ");
 gtk_box_pack_start(GTK_BOX(hbox3), label, FALSE, FALSE, 0);
 
@@ -2807,13 +2807,13 @@ combo = gtk_combo_new();
 gtk_entry_set_editable(GTK_ENTRY(GTK_COMBO(combo)->entry), FALSE);
 gtk_combo_set_popdown_strings(GTK_COMBO(combo), list);
 gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(combo)->entry), entry->str);
-gtk_box_pack_start(GTK_BOX(hbox3), combo, FALSE, FALSE, 0);
+gtk_box_pack_start(GTK_BOX(hbox3), combo, TRUE, FALSE, 0);
 g_signal_connect(GTK_OBJECT(GTK_COMBO(combo)->entry), "changed",
                  GTK_SIGNAL_FUNC(event_atom_order_modify), (gpointer) combo);
 g_object_set_data(G_OBJECT(combo), "id", (gpointer) ATOM_ORDER_TYPE_3);
 
 hbox4 = gtk_hbox_new(FALSE, 0);
-gtk_box_pack_start(GTK_BOX(vbox), hbox4, FALSE, FALSE, 0);
+gtk_box_pack_start(GTK_BOX(vbox), hbox4, FALSE, TRUE, 0);
 label = gtk_label_new("  4th  ");
 gtk_box_pack_start(GTK_BOX(hbox4), label, FALSE, FALSE, 0);
 
@@ -2823,13 +2823,13 @@ combo = gtk_combo_new();
 gtk_entry_set_editable(GTK_ENTRY(GTK_COMBO(combo)->entry), FALSE);
 gtk_combo_set_popdown_strings(GTK_COMBO(combo), list);
 gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(combo)->entry), entry->str);
-gtk_box_pack_start(GTK_BOX(hbox4), combo, FALSE, FALSE, 0);
+gtk_box_pack_start(GTK_BOX(hbox4), combo, TRUE, FALSE, 0);
 g_signal_connect(GTK_OBJECT(GTK_COMBO(combo)->entry), "changed",
                  GTK_SIGNAL_FUNC(event_atom_order_modify), (gpointer) combo);
 g_object_set_data(G_OBJECT(combo), "id", (gpointer) ATOM_ORDER_TYPE_4);
 
 hbox5 = gtk_hbox_new(FALSE, 0);
-gtk_box_pack_start(GTK_BOX(vbox), hbox5, FALSE, FALSE, 0);
+gtk_box_pack_start(GTK_BOX(vbox), hbox5, FALSE, TRUE, 0);
 label = gtk_label_new("  5th  ");
 gtk_box_pack_start(GTK_BOX(hbox5), label, FALSE, FALSE, 0);
 
@@ -2839,17 +2839,17 @@ combo = gtk_combo_new();
 gtk_entry_set_editable(GTK_ENTRY(GTK_COMBO(combo)->entry), FALSE);
 gtk_combo_set_popdown_strings(GTK_COMBO(combo), list);
 gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(combo)->entry), entry->str);
-gtk_box_pack_start(GTK_BOX(hbox5), combo, FALSE, FALSE, 0);
+gtk_box_pack_start(GTK_BOX(hbox5), combo, TRUE, FALSE, 0);
 g_signal_connect(GTK_OBJECT(GTK_COMBO(combo)->entry), "changed",
                  GTK_SIGNAL_FUNC(event_atom_order_modify), (gpointer) combo);
 g_object_set_data(G_OBJECT(combo), "id", (gpointer) ATOM_ORDER_TYPE_5);
 
 /* Molecule list ordering options */
-vbox = gui_frame_vbox("Molecule order", FALSE, FALSE, hbox);
+vbox = gui_frame_vbox("Molecule order filter", TRUE, TRUE, hbox);
 
 /* options */
 hbox1 = gtk_hbox_new(FALSE, PANEL_SPACING);
-gtk_box_pack_start(GTK_BOX(vbox), hbox1, FALSE, FALSE, 0);
+gtk_box_pack_start(GTK_BOX(vbox), hbox1, FALSE, TRUE, 0);
 label = gtk_label_new("  1st  ");
 gtk_box_pack_start(GTK_BOX(hbox1), label, FALSE, FALSE, 0);
 
@@ -2859,7 +2859,7 @@ combo = gtk_combo_new();
 gtk_entry_set_editable(GTK_ENTRY(GTK_COMBO(combo)->entry), FALSE);
 gtk_combo_set_popdown_strings(GTK_COMBO(combo), list);
 gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(combo)->entry), entry->str);
-gtk_box_pack_start(GTK_BOX(hbox1), combo, FALSE, FALSE, 0);
+gtk_box_pack_start(GTK_BOX(hbox1), combo, TRUE, FALSE, 0);
 g_signal_connect(GTK_OBJECT(GTK_COMBO(combo)->entry), "changed",
                  GTK_SIGNAL_FUNC(event_molecule_order_modify), (gpointer) combo);
 g_object_set_data(G_OBJECT(combo), "id", (gpointer) MOL_ORDER_TYPE_1);
@@ -2867,7 +2867,7 @@ g_object_set_data(G_OBJECT(combo), "id", (gpointer) MOL_ORDER_TYPE_1);
 select_entry(sysenv.molecule_order[1], entry);
 
 hbox2 = gtk_hbox_new(FALSE, PANEL_SPACING);
-gtk_box_pack_start(GTK_BOX(vbox), hbox2, FALSE, FALSE, 0);
+gtk_box_pack_start(GTK_BOX(vbox), hbox2, FALSE, TRUE, 0);
 label = gtk_label_new("  2nd  ");
 gtk_box_pack_start(GTK_BOX(hbox2), label, FALSE, FALSE, 0);
 
@@ -2875,13 +2875,13 @@ combo = gtk_combo_new();
 gtk_entry_set_editable(GTK_ENTRY(GTK_COMBO(combo)->entry), FALSE);
 gtk_combo_set_popdown_strings(GTK_COMBO(combo), list);
 gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(combo)->entry), entry->str);
-gtk_box_pack_start(GTK_BOX(hbox2), combo, FALSE, FALSE, 0);
+gtk_box_pack_start(GTK_BOX(hbox2), combo, TRUE, FALSE, 0);
 g_signal_connect(GTK_OBJECT(GTK_COMBO(combo)->entry), "changed",
                  GTK_SIGNAL_FUNC(event_molecule_order_modify), (gpointer) combo);
 g_object_set_data(G_OBJECT(combo), "id", (gpointer) MOL_ORDER_TYPE_2);
 
 hbox3 = gtk_hbox_new(FALSE, PANEL_SPACING);
-gtk_box_pack_start(GTK_BOX(vbox), hbox3, FALSE, FALSE, 0);
+gtk_box_pack_start(GTK_BOX(vbox), hbox3, FALSE, TRUE, 0);
 label = gtk_label_new("  3rd  ");
 gtk_box_pack_start(GTK_BOX(hbox3), label, FALSE, FALSE, 0);
 
@@ -2891,13 +2891,13 @@ combo = gtk_combo_new();
 gtk_entry_set_editable(GTK_ENTRY(GTK_COMBO(combo)->entry), FALSE);
 gtk_combo_set_popdown_strings(GTK_COMBO(combo), list);
 gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(combo)->entry), entry->str);
-gtk_box_pack_start(GTK_BOX(hbox3), combo, FALSE, FALSE, 0);
+gtk_box_pack_start(GTK_BOX(hbox3), combo, TRUE, FALSE, 0);
 g_signal_connect(GTK_OBJECT(GTK_COMBO(combo)->entry), "changed",
                  GTK_SIGNAL_FUNC(event_molecule_order_modify), (gpointer) combo);
 g_object_set_data(G_OBJECT(combo), "id", (gpointer) MOL_ORDER_TYPE_3);
 
 hbox4 = gtk_hbox_new(FALSE, PANEL_SPACING);
-gtk_box_pack_start(GTK_BOX(vbox), hbox4, FALSE, FALSE, 0);
+gtk_box_pack_start(GTK_BOX(vbox), hbox4, FALSE, TRUE, 0);
 label = gtk_label_new("  4th  ");
 gtk_box_pack_start(GTK_BOX(hbox4), label, FALSE, FALSE, 0);
 
@@ -2907,13 +2907,13 @@ combo = gtk_combo_new();
 gtk_entry_set_editable(GTK_ENTRY(GTK_COMBO(combo)->entry), FALSE);
 gtk_combo_set_popdown_strings(GTK_COMBO(combo), list);
 gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(combo)->entry), entry->str);
-gtk_box_pack_start(GTK_BOX(hbox4), combo, FALSE, FALSE, 0);
+gtk_box_pack_start(GTK_BOX(hbox4), combo, TRUE, FALSE, 0);
 g_signal_connect(GTK_OBJECT(GTK_COMBO(combo)->entry), "changed",
                  GTK_SIGNAL_FUNC(event_molecule_order_modify), (gpointer) combo);
 g_object_set_data(G_OBJECT(combo), "id", (gpointer) MOL_ORDER_TYPE_4);
 
 hbox5 = gtk_hbox_new(FALSE, PANEL_SPACING);
-gtk_box_pack_start(GTK_BOX(vbox), hbox5, FALSE, FALSE, 0);
+gtk_box_pack_start(GTK_BOX(vbox), hbox5, FALSE, TRUE, 0);
 label = gtk_label_new("  5th  ");
 gtk_box_pack_start(GTK_BOX(hbox5), label, FALSE, FALSE, 0);
 
@@ -2923,7 +2923,7 @@ combo = gtk_combo_new();
 gtk_entry_set_editable(GTK_ENTRY(GTK_COMBO(combo)->entry), FALSE);
 gtk_combo_set_popdown_strings(GTK_COMBO(combo), list);
 gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(combo)->entry), entry->str);
-gtk_box_pack_start(GTK_BOX(hbox5), combo, FALSE, FALSE, 0);
+gtk_box_pack_start(GTK_BOX(hbox5), combo, TRUE, FALSE, 0);
 g_signal_connect(GTK_OBJECT(GTK_COMBO(combo)->entry), "changed",
                  GTK_SIGNAL_FUNC(event_molecule_order_modify), (gpointer) combo);
 g_object_set_data(G_OBJECT(combo), "id", (gpointer) MOL_ORDER_TYPE_5);
