@@ -209,6 +209,7 @@ free_slist(species->sites);
 
 g_free(species);
 }
+
 #define DEBUG_CALC_CENTRE 0
 /* Calculate geometric centre of molecule */
 void calc_centre(gdouble (*sites)[3], gdouble *centre, gint n)
@@ -221,11 +222,11 @@ if (n < 1)
 
 VEC3SET(centre, 0.0, 0.0, 0.0);
 
-for (j=3; j--; )
+for (j = 3; j--;)
   {
   min = sites[0][j];
   max = sites[0][j];
-  for (i=1; i < n; i++ )
+  for (i = 1; i < n; i++)
     {
     min = MINIMUM(min, sites[i][j]);
     max = MAXIMUM(max, sites[i][j]);
@@ -258,7 +259,7 @@ for (list=mol->cores ; list ; list=g_slist_next(list))
   ARR3SET(vec, core->x);
   vecmat(data->latmat, vec); /* Convert to Cartesian coords */
   mass = atom_mass(core);
-  for(i=3;i--;)
+  for(i=3; i--;)
     cofm[i] += mass*vec[i];
   total_mass += mass;
 
@@ -286,9 +287,9 @@ printf("C of M %f %f %f\n", cofm[0], cofm[1], cofm[2]);
 void moments(gint n, gdouble *mass, gdouble **sites, gdouble *inertia)
 {
 gint i;
-gdouble *x=sites[0];
-gdouble *y=sites[1];
-gdouble *z=sites[2];
+gdouble *x = sites[0];
+gdouble *y = sites[1];
+gdouble *z = sites[2];
 gdouble sxx=0.0, syy=0.0, szz=0.0;
 gdouble sxy=0.0, sxz=0.0, syz=0.0;
 
@@ -319,7 +320,7 @@ gint i, j, k;
 gdouble x = 0, y = 0;
 gint l = 0, m = 0, iq, ij, jq;
 gint ll, il, im, mq, lq, lm, mm;
-gdouble anorm=0.0, anrmx, range=1.0e-12;
+gdouble anorm = 0.0, anrmx, range = 1.0e-12;
 gint redo;
 gdouble thr, sinx, sinx2, cosx, cosx2, sincs;
 gint pass, ia, imq, ilq, imr, ilr;
@@ -341,7 +342,7 @@ for (i=0; i<n; i++) {
     }
   }
 }
-if ( anorm > 0 ) {
+if (anorm > 0) {
    anorm = sqrt(2)* sqrt(anorm);
    anrmx = anorm*range/n;
 
@@ -352,7 +353,7 @@ thr = anorm;
 while (thr > anrmx)
   {
   thr = thr/n;
-  for (pass=0; pass<1000; pass++)
+  for (pass = 0; pass < 1000; pass++)
     {
     l=0;
 /*  test for l=second from last column */
@@ -423,19 +424,19 @@ while (thr > anrmx)
   }
 
 /* sort eigen values and vectors */
-  for ( i=0; i<n; i++ )
+  for (i = 0; i < n; i++)
     {
     ll = i+(i*i+i)/2;
     iq = n*i;
     jq = n*(i-1);
-    for ( j=i; j<n; j++ ) {
+    for (j = i; j < n; j++) {
       jq += n;
       mm = j+(j*j+j)/2;
-      if (a[ll] < a[mm] ) {
+      if (a[ll] < a[mm]) {
         x = a[ll];
         a[ll] = a[mm];
         a[mm] = x;
-        for ( k=0; k<n; k++) {
+        for (k = 0; k < n; k++) {
           ilr = iq+k;
           imr = jq+k;
           x = r[ilr];
@@ -463,7 +464,7 @@ struct core_pak *core;
 calc_cofm(data, mol, cofm);
 
 isite=0;
-for (list=mol->cores ; list ; list=g_slist_next(list))
+for (list = mol->cores ; list ; list=g_slist_next(list))
   {
   core = (struct core_pak *) list->data;
   if (core->status & (DELETED | HIDDEN))
@@ -476,7 +477,7 @@ for (isite = 0; isite < num_atoms; isite++)
   {
   VEC3SET(pfs, p_f_sites[0][isite],p_f_sites[1][isite],p_f_sites[2][isite]);
 
-  if (data->periodic == 3 )
+  if (data->periodic == 3)
     vecmat(data->latmat, pfs); /* Conv frac coords to real coords */
 
   for(i=0; i < 3; i++)
@@ -702,7 +703,7 @@ void quat_fit(struct model_pak *data, struct mol_pak *molfit,
    if (core->status & (DELETED | HIDDEN))
      continue;
 
-   for (i=3; i--; )
+   for (i = 3; i--;)
      site_fit[i] = core->x[i];
    if (data->periodic == 3)
      vecmat(data->latmat, site_fit);
@@ -710,7 +711,7 @@ void quat_fit(struct model_pak *data, struct mol_pak *molfit,
 
    site = (struct site_pak *) slist->data;
 
-   for (i=3; i--; )
+   for (i = 3; i--;)
      {
      x[isite][i] = site_fit[i];
      y[isite][i] = site->x[i];
@@ -721,8 +722,8 @@ void quat_fit(struct model_pak *data, struct mol_pak *molfit,
 
  calc_cofm(data, molfit, centre_x);
 
- for(i=0; i < n; i++)
-   for (j=0; j < 3; j++)
+ for(i = 0; i < n; i++)
+   for (j = 0; j < 3; j++)
      x[i][j] -= centre_x[j];
 
 /* generate the upper triangle of the quadratic form matrix */
@@ -836,7 +837,7 @@ core2 = (mol2->cores)->data;
 
 /* If monatomic, sort by atom type */
 if (g_slist_length(s1->sites) == 1 &&
-    g_slist_length(s2->sites) == 1 )
+    g_slist_length(s2->sites) == 1)
    return(compare_atoms(core1, core2));
 
 /* Otherwise sort by molecule */
@@ -860,31 +861,31 @@ basename = g_strdup(model->basename);
 parse_space_replace(basename,'_');
 
 /* Create file names from model name (unless already set) */
-if (g_ascii_strcasecmp(model->moldy.control_file, "") == 0 )
+if (g_ascii_strcasecmp(model->moldy.control_file, "") == 0)
   {
   g_free(model->moldy.control_file);
   model->moldy.control_file = g_strdup_printf("%s.min", basename);
   }
 
-if (g_ascii_strcasecmp(model->moldy.sysspec_file, "") == 0 )
+if (g_ascii_strcasecmp(model->moldy.sysspec_file, "") == 0)
   {
   g_free(model->moldy.sysspec_file);
   model->moldy.sysspec_file = g_strdup_printf("%s.min", basename);
   }
 
-if (g_ascii_strcasecmp(model->moldy.out_file, "") == 0 )
+if (g_ascii_strcasecmp(model->moldy.out_file, "") == 0)
   {
   g_free(model->moldy.out_file);
   model->moldy.out_file = g_strdup_printf("%s.mdo", basename);
   }
 
-if (g_ascii_strcasecmp(model->moldy.dump_file, "") == 0 )
+if (g_ascii_strcasecmp(model->moldy.dump_file, "") == 0)
   {
   g_free(model->moldy.dump_file);
   model->moldy.dump_file = g_strdup_printf("%s%%d.dat", basename);
   }
 
-if (g_ascii_strcasecmp(model->moldy.save_file, model->moldy.restart_file) == 0 )
+if (g_ascii_strcasecmp(model->moldy.save_file, model->moldy.restart_file) == 0)
   {
   g_free(model->moldy.save_file);
   model->moldy.save_file = g_strdup_printf("%s.sav", basename);
@@ -917,9 +918,9 @@ g_free(model->moldy.out_file);
 g_free(model->moldy.backup_file);
 g_free(model->moldy.temp_file);
 
-for (list=model->moldy.species ; list ; list=g_slist_next(list))
+for (list = model->moldy.species; list; list=g_slist_next(list))
   moldyspec_free(list->data);
-for (list=model->moldy.pots ; list ; list=g_slist_next(list))
+for (list = model->moldy.pots; list; list=g_slist_next(list))
   pots_free(list->data);
 
 model->moldy.title = NULL;
@@ -1236,7 +1237,7 @@ gdouble e_units;
 e_units = data->moldy.mass_unit * SQR(data->moldy.length_unit) /
                SQR(data->moldy.time_unit) * AVOGADRO/1e3;
 
-if (fabs( e_units - 1) < ENERGY_TOLERANCE )
+if (fabs( e_units - 1) < ENERGY_TOLERANCE)
   {
   data->moldy.energy_unit = KJMOL;
   return;
@@ -1340,7 +1341,7 @@ for(imol=0; imol < nmols; imol++)
 
   if (specdata != NULL)
     {
-    if (g_slist_length(specdata->sites) > 1 )
+    if (g_slist_length(specdata->sites) > 1)
       quat_random(quat);
 
     /* Identify and add atoms for all sites on species */
@@ -1358,7 +1359,7 @@ for(imol=0; imol < nmols; imol++)
         cart[j] -= floor(cart[j]);
         p_f_sites[j] = site->x[j];
         }
-      if (g_slist_length(specdata->sites) > 1 )
+      if (g_slist_length(specdata->sites) > 1)
         quat_rotate(p_f_sites, quat);
       vecmat(data->latmat, cart); /* Conv frac coords to real coords */
       for(j=3;j--;)
@@ -1492,10 +1493,10 @@ specdata->num_mols = nmols;
 specdata->framework = framework;
 
 /* Centre species */
-for (list=sites ; list ; list=g_slist_next(list))
+for (list = sites; list; list=g_slist_next(list))
   {
   site_data = (struct site_pak *) list->data;
-  if (!framework )
+  if (!framework)
     for(i=3; i--;)
       site_data->x[i] -= cofm[i];
   site = new_site(site_data->x, site_data->type);
@@ -1630,13 +1631,13 @@ if (!g_ascii_strncasecmp(g_path_get_basename(filename), TMPNAME, strlen(TMPNAME)
   }
 else
 /* Read from system specification file given in control file */
-  if (strlen(data->moldy.sysspec_file) > 0 )
+  if (strlen(data->moldy.sysspec_file) > 0)
      {
      data->id = MOLDY;
      fclose(fp);
 
   /* Use current working directory unless alternate path already in filename */
-     if (g_ascii_strcasecmp(data->moldy.sysspec_file, g_path_get_basename(data->moldy.sysspec_file)) )
+     if (g_ascii_strcasecmp(data->moldy.sysspec_file, g_path_get_basename(data->moldy.sysspec_file)))
        fullname = g_strdup(data->moldy.sysspec_file);
      else
        fullname = g_build_filename(sysenv.cwd, data->moldy.sysspec_file, NULL);
@@ -1671,14 +1672,14 @@ while (!fgetline(fp, line))
 
   if (num_tokens < 4)
     {
-    if (num_mols > 0 ) /* previous species complete */
+    if (num_mols > 0) /* previous species complete */
       {
       specdata = create_species(specname, site_list, cofm, num_mols, framework);
       species_list = g_slist_append(species_list, specdata);
       data->moldy.num_mols += num_mols;
       if (total_mass > 0.0)
         {
-        for(i=3;i--;)
+        for(i = 3; i--;)
           cofm[i] /= total_mass;
 #if DEBUG_LOAD_MOLDY
 printf("----------------------------------------\n");
@@ -1735,7 +1736,7 @@ printf("----------------------------------------\n");
 
       flag = 0;
       temp_list = sitetype_list;
-      while( temp_list != NULL)
+      while(temp_list != NULL)
         {
         typedata = (struct atomtype_pak*) temp_list->data;
         if (typedata->id == id)
@@ -1763,9 +1764,9 @@ printf("----------------------------------------\n");
            }
         temp_list = g_slist_next(temp_list);
         }
-      if (!flag )
+      if (!flag)
         {
-        if (mass == -1 )
+        if (mass == -1)
           {
           printf("Insufficient data for site %d\n", id);
           break;
@@ -1776,7 +1777,7 @@ printf("----------------------------------------\n");
           sitetype_list = g_slist_append(sitetype_list, typedata);
           }
         }
-      for(i=3;i--;)
+      for(i = 3; i--;)
         cofm[i] += mass*site->x[i];
       total_mass += mass;
       site->type = typedata;
@@ -1812,7 +1813,7 @@ if (!potspec[i].name)                        /* Did the loop find 'name'? */
   }
 else
   {
-  data->moldy.pot_type = i;                  /* yes                       */ 
+  data->moldy.pot_type = i;                  /* yes */ 
   n_items = potspec[i].npar;
 #if DEBUG_LOAD_MOLDY
   printf("Known potential type (%d) found\n", i);
@@ -1835,7 +1836,7 @@ do
     while( temp_list != NULL)
       {
       tempdata = (struct atomtype_pak*) temp_list->data;
-      if (tempdata->id == idi )
+      if (tempdata->id == idi)
          {
          label1 = g_strdup(tempdata->label);
          charge1 = tempdata->charge;
@@ -1853,7 +1854,7 @@ do
       {
       pot = create_pot(label1, charge1, label2, charge2);
 
-      for(i=0; i<n_items; i++)
+      for(i=0; i < n_items; i++)
         {
         if (num_tokens > 2+i)
           pot->parm[i] = g_ascii_strtod(*(buff+2+i), NULL);
@@ -1899,8 +1900,8 @@ if (!fgetline(fp, line))
   if (nx < 1 || ny < 1 || nz < 1)
     return(1);
 
-  for (i=6; i--; )
-    if (data->pbc[i] < 0.0 )
+  for (i=6; i--;)
+    if (data->pbc[i] < 0.0)
       return(1);
 
   if (nx * ny * nz > 1000)
@@ -2068,7 +2069,7 @@ printf("-------------------------------------\n");
 /* display init */
 model_prep(data);
 
-if (nx > 1 || ny > 1 || nz > 1 )
+if (nx > 1 || ny > 1 || nz > 1)
   {
   space_make_images(CREATE, data);
   coords_init(CENT_COORDS, data);
@@ -2109,7 +2110,7 @@ else
 types = NULL;
 
 /* go through all atoms */
-for (list=data->cores; list ; list=g_slist_next(list))
+for (list=data->cores; list; list=g_slist_next(list))
   {
   found=0;
   core1 = (struct core_pak *) list->data;
@@ -2124,7 +2125,7 @@ for (list=data->cores; list ; list=g_slist_next(list))
     core2 = (struct core_pak *) g_slist_nth_data(data->cores, atom_type[j]);
     q2 = atom_charge(core2);
     if (fabs(q1-q2) < FRACTION_TOLERANCE &&
-       (!g_ascii_strcasecmp(core1->atom_label, core2->atom_label) ))
+       (!g_ascii_strcasecmp(core1->atom_label, core2->atom_label)))
           {
           found++;
           break;
@@ -2196,7 +2197,7 @@ data->atom_types = NULL;
 atom_type = g_malloc(num_atoms*sizeof(gint));
 
 /* go through all atoms */
-for (list=data->cores; list ; list=g_slist_next(list))
+for (list = data->cores; list; list=g_slist_next(list))
   {
   found=0;
   core1 = (struct core_pak *) list->data;
@@ -2210,7 +2211,7 @@ for (list=data->cores; list ; list=g_slist_next(list))
     core2 = (struct core_pak *) g_slist_nth_data(data->cores, atom_type[j]);
     q2 = atom_charge(core2);
     if (fabs(q1-q2) < FRACTION_TOLERANCE &&
-       (!g_ascii_strcasecmp(core1->atom_label, core2->atom_label) ))
+       (!g_ascii_strcasecmp(core1->atom_label, core2->atom_label)))
           {
           found++;
           break;
@@ -2287,28 +2288,28 @@ p_f_sites2[0] = (gdouble *) g_malloc(num_sites*sizeof(gdouble));
 p_f_sites2[1] = (gdouble *) g_malloc(num_sites*sizeof(gdouble));
 p_f_sites2[2] = (gdouble *) g_malloc(num_sites*sizeof(gdouble));
 
-for(i=0; i<3; i++)
-  for(j=0; j<num_sites; j++)
+for(i = 0; i < 3; i++)
+  for(j = 0; j < num_sites; j++)
     p_f_sites1[i][j] = p_f_sites2[i][j] = 0.0;
 
 /* Molecule being matched */
-for (list1=mol1->cores, j=0; list1 ; list1=g_slist_next(list1))
+for (list1=mol1->cores, j=0; list1; list1=g_slist_next(list1))
   {
   core1 = (struct core_pak *) list1->data;
   if (core1->status & (DELETED | HIDDEN))
     continue;
-  for(i=3;i--;)
+  for(i = 3; i--;)
     p_f_sites1[i][j] = core1->x[i];
   j++;
   }
 
 /* Molecule being compared with */
-for (list2=mol2->cores, j=0; list2 ; list2=g_slist_next(list2))
+for (list2 = mol2->cores, j=0; list2; list2=g_slist_next(list2))
   {
   core2 = (struct core_pak *) list2->data;
   if (core2->status & (DELETED | HIDDEN))
     continue;
-  for(i=3;i--;)
+  for(i = 3; i--;)
     p_f_sites2[i][j] = core2->x[i];
   j++;
   }
@@ -2337,7 +2338,7 @@ i = 0;
                              /* j=index for visible atoms in mol 2 */
 k = total_atoms-num_ignore;  /* k=index for hidden/deleted atoms in mol 1*/
                              /* l=index for all atoms in mol 1 */
-for (list1=mol1->cores, l=0 ; list1 ; list1=g_slist_next(list1), l++)
+for (list1 =  mol1->cores, l=0; list1; list1 = g_slist_next(list1), l++)
   {
   core1 = (struct core_pak *) list1->data;
   if (core1->status & (DELETED | HIDDEN))
@@ -2347,7 +2348,7 @@ for (list1=mol1->cores, l=0 ; list1 ; list1=g_slist_next(list1), l++)
     continue;
     }
   charge1 = atom_charge(core1);
-  for (list2=mol2->cores, j=0 ; list2 ; list2=g_slist_next(list2))
+  for (list2 = mol2->cores, j=0; list2; list2 = g_slist_next(list2))
     {
     core2 = (struct core_pak *) list2->data;
     if (core2->status & (DELETED | HIDDEN))
@@ -2360,7 +2361,7 @@ printf("Comparing %s %f and %s %f: Tolerance: %e\n",
       core1->atom_label, charge1, core2->atom_label, charge2, tolerance);
 #endif
     if (!g_ascii_strcasecmp(core1->atom_label, core2->atom_label) &&
-        fabs(charge1 - charge2) < FRACTION_TOLERANCE )
+        fabs(charge1 - charge2) < FRACTION_TOLERANCE)
       {
       if (((fabs(p_f_sites2[0][j] - p_f_sites1[0][i]) < tolerance) &&
            (fabs(p_f_sites2[1][j] - p_f_sites1[1][i]) < tolerance) &&
@@ -2375,17 +2376,17 @@ printf("Comparing %s %f and %s %f: Tolerance: %e\n",
   i++;
   }
 
-for(i=0; i < num_sites; i++) /* All visible atoms paired? */
+for(i = 0; i < num_sites; i++) /* All visible atoms paired? */
   if (pair[i] == -1)
     match = 0;
 
 if (match && tolerance > FLOATING_POINT)
   {
-  for(n=0; n < nrot; n++)
+  for(n = 0; n < nrot; n++)
     {
     match = 1;
     temp_list = NULL;
-    for (i=0; i < num_sites; i++)
+    for (i = 0; i < num_sites; i++)
       {
       /* Swap core list */
       temp_core = g_slist_nth_data(mol1->cores, pair[i]);
@@ -2425,7 +2426,7 @@ if (match && tolerance > FLOATING_POINT)
     break;
     }
 /* apply rotation */
-    for(j=0; j < num_sites; j++)
+    for(j = 0; j < num_sites; j++)
       {
       vec[0] = p_f_sites2[0][j];
       vec[1] = p_f_sites2[1][j];
@@ -2460,7 +2461,7 @@ struct core_pak *core, *neighbour;
 gdouble *p_f_sites[3];
 /* No of hidden atoms in each molecule and counter for visible atoms */
 gint *num_atoms;
-gchar *name=NULL;
+gchar *name = NULL;
 gdouble cofm[3], charge;
 gint label_no;
 
@@ -2471,7 +2472,7 @@ num_atoms = (gint *)g_malloc(g_slist_length(data->moles)*sizeof(gint));
   printf("No of molecules: %d\n", g_slist_length(data->moles));
 #endif
 
-for (mlist=data->moles ; mlist ; mlist=g_slist_next(mlist))
+for (mlist=data->moles; mlist; mlist=g_slist_next(mlist))
   {
   mol1 = (struct mol_pak *) mlist->data;
 
@@ -2484,23 +2485,23 @@ for (mlist=data->moles ; mlist ; mlist=g_slist_next(mlist))
   num_atoms[i] = count_visible_cores(mol1->cores);
 
 #if DEBUG_CALC_SPECIES
-  printf("%d atom%sin molecule %d\n", num_atoms[i],(num_atoms[i]!=1?"s ":" "), i+1);
+  printf("%d atom%sin molecule %d\n", num_atoms[i], (num_atoms[i]!=1?"s ":" "), i+1);
 #endif
-  match=0;
+  match = 0;
   if (num_atoms[i] > 0)
     {
-    for (list=spec_list; list; list=g_slist_next(list))
+    for (list = spec_list; list; list = g_slist_next(list))
       {
       specdata = (struct moldyspec_pak *) list->data;
       mol2 = (struct mol_pak *) ((specdata->mols)->data);
       if (num_atoms[i] == num_atoms[g_slist_index(data->moles, mol2)])
         match = match_molecules(data, mol1, mol2, tolerance);
 
-      if ( match )
+      if ( match)
         break;
       }
 
-    if ( match )
+    if ( match)
       {
       specdata->mols = g_slist_append(specdata->mols, mol1);
       specdata->num_mols++;
@@ -2518,7 +2519,7 @@ for (mlist=data->moles ; mlist ; mlist=g_slist_next(mlist))
 
       VEC3SET(cofm, 0.0, 0.0, 0.0);
 
-      for (list=mol1->cores ; list ; list=g_slist_next(list))
+      for (list = mol1->cores; list; list = g_slist_next(list))
         {
         core = (struct core_pak *) list->data;
         if (core->status & (DELETED | HIDDEN))
@@ -2528,7 +2529,7 @@ for (mlist=data->moles ; mlist ; mlist=g_slist_next(mlist))
 
         /* Use numerals in atom_label in species name if monatomic */
         label_no = -1; /* Default is no trailing numeral */
-        if (num_atoms[i] == 1 )
+        if (num_atoms[i] == 1)
            {
            g_free(name);
            name = g_strdup(elem_data.name);
@@ -2550,7 +2551,7 @@ for (mlist=data->moles ; mlist ; mlist=g_slist_next(mlist))
            for (list = spec_list; list; list = g_slist_next(list)) 
              {
              specdata = (struct moldyspec_pak *) list->data;
-             if (g_ascii_strcasecmp(name, specdata->name) == 0 )
+             if (g_ascii_strcasecmp(name, specdata->name) == 0)
                {
                j++;
                if (j == 1)
@@ -2558,7 +2559,7 @@ for (mlist=data->moles ; mlist ; mlist=g_slist_next(mlist))
                }
              }
            
-           if (j > 0 )
+           if (j > 0)
              {
              g_free(name);
              name = g_strdup_printf("%s%d", elem_data.name, j+1);
@@ -2613,7 +2614,7 @@ for (mlist=data->moles ; mlist ; mlist=g_slist_next(mlist))
           {
           nv = g_slist_index(site_list, slist->data);
           site = (struct site_pak *) slist->data;
-          for(j=3; j--;)
+          for(j = 3; j--;)
             p_f_sites[j][nv] = site->x[j];
           }
         calc_pfc(data, mol1, p_f_sites, g_slist_length(site_list));
@@ -2621,7 +2622,7 @@ for (mlist=data->moles ; mlist ; mlist=g_slist_next(mlist))
           {
           nv = g_slist_index(site_list, slist->data);
           site = (struct site_pak *) slist->data;
-          for(j=3; j--;)
+          for(j = 3; j--;)
             site->x[j] = p_f_sites[j][nv];
           }
         }
@@ -2664,7 +2665,7 @@ return(g_slist_length(spec_list));
 gint delete_moldy_potentials(struct model_pak *model)
 {
 
-if (model == NULL )
+if (model == NULL)
   model = sysenv.active_model;
 
 if (model == NULL)
@@ -2695,10 +2696,10 @@ GString *txt, * inname;
 const gchar *ctemp;
 
 /* checks */
-if (data == NULL )
+if (data == NULL)
   data = sysenv.active_model;
 
-if ( g_find_program_in_path("ransub") == NULL)
+if (g_find_program_in_path("ransub") == NULL)
   {
   gui_text_show(ERROR, "You need to have Moldy's ransub utility installed for this function.\n");
   return(2);
@@ -2709,7 +2710,7 @@ if (data == NULL)
 if (filename == NULL)
   return(2);
 
-if (!g_ascii_strcasecmp(filename, g_path_get_basename(filename)) )
+if (!g_ascii_strcasecmp(filename, g_path_get_basename(filename)))
   fullname = g_build_filename(sysenv.cwd, filename, NULL);
 else
   fullname = g_strdup(filename);
@@ -2723,15 +2724,15 @@ if (access(fullname, R_OK))
 if (!ascii_check(fullname))
    gui_text_show(ERROR, "Restart file not in correct format.\n");
 
-if (data->moldy.restart_file )
+if (data->moldy.restart_file)
   g_free(data->moldy.restart_file);
 data->moldy.restart_file = g_path_get_basename(filename);
 
-if (data->moldy.restart_dir )
+if (data->moldy.restart_dir)
   g_free(data->moldy.restart_dir);
 data->moldy.restart_dir = g_strdup(sysenv.cwd);
 
-if (data->moldy.sysspec_file )
+if (data->moldy.sysspec_file)
   g_free(data->moldy.sysspec_file);
 data->moldy.sysspec_file = g_path_get_basename(filename);
 
@@ -2793,7 +2794,7 @@ gchar atom1[4], atom2[4];
 gdouble charge1, charge2;
 
 /* checks */
-if (data == NULL )
+if (data == NULL)
   {
   data = sysenv.active_model;
   g_free(data->moldy.lib_file);
@@ -2813,7 +2814,7 @@ fullname = g_build_filename(sysenv.cwd, filename, NULL);
 if (fullname == NULL)
   return(3);
 
-if (strlen(data->moldy.lib_file) > 0 )
+if (strlen(data->moldy.lib_file) > 0)
   {
 /* test for library existence */
   if (access(fullname, R_OK))
@@ -2830,7 +2831,7 @@ while (!fgetline(fp,line))
   if (*buff == NULL)
     return(-1);
 
-  for (i = 0; potspec[i].name; i++)             /* Is 'name' a known type? */
+  for (i = 0; potspec[i].name; i++)            /* Is 'name' a known type? */
     if (g_ascii_strcasecmp(*buff, potspec[i].name) == 0)
       break;
 
@@ -2870,7 +2871,7 @@ while (!fgetline(fp,line))
     line_no++;
     if (sscanf(line, "%4s %lf %4s %lf %[^#]", atom1, &charge1, atom2, &charge2, pline) > 4)
       {
-      for(i=0; i<n_items; i++)
+      for(i = 0; i < n_items; i++)
         if (*(buff+4+i) == NULL)
           {
           printf("Insufficient parameters in parameter line %d\n", line_no);
@@ -2891,7 +2892,7 @@ while (!fgetline(fp,line))
         {   
         pot = create_pot(atom1, charge1,
                          atom2, charge2);
-        for(i=0; i<n_items; i++)
+        for(i = 0; i < n_items; i++)
           pot->parm[i] = (gdouble) *(p+i);
 
         data->moldy.pots = g_slist_append(data->moldy.pots, pot);
@@ -3121,16 +3122,16 @@ fprintf(fp, "# Control file written by GDIS on %s", ctime((&tp)));
 if (g_ascii_strcasecmp(moldy.title, ""))
   fprintf(fp, "title=%s\n", moldy.title);
 
-if (strlen(moldy.restart_file) > 0 )
+if (strlen(moldy.restart_file) > 0)
     fprintf(fp, "restart-file=%s\n", moldy.restart_file);
 else
   {
-  if (data->periodic == 3 )
+  if (data->periodic == 3)
     fprintf(fp, "lattice-start=%d\n", 1);
   else
     fprintf(fp, "density=%f\n", moldy.density);
 
-  if (g_ascii_strcasecmp(moldy.control_file, moldy.sysspec_file) )
+  if (g_ascii_strcasecmp(moldy.control_file, moldy.sysspec_file))
     fprintf(fp, "sys-spec-file=%s\n", moldy.sysspec_file);
   }
 /* Simulation parameters */
@@ -3140,9 +3141,9 @@ fprintf(fp, "cpu-limit=%g\n", moldy.cpu_limit);
 fprintf(fp, "temperature=%g\n", moldy.temperature);
 
 /* Save files */
-if (moldy.text_save )
+if (moldy.text_save)
   fprintf(fp, "text-mode-save=%d\n", moldy.text_save);
-if (strlen(moldy.save_file) > 0 )
+if (strlen(moldy.save_file) > 0)
   fprintf(fp, "save-file=%s\n", moldy.save_file);
 if (moldy.dump_level > 0 && strlen(moldy.dump_file) > 0)
   {
@@ -3154,7 +3155,7 @@ if (moldy.dump_level > 0 && strlen(moldy.dump_file) > 0)
   }
 if (g_ascii_strcasecmp(moldy.temp_file, "MDTEMPX"))
   fprintf(fp, "temp-file=%s\n", moldy.temp_file);
-if (!moldy.xdr )
+if (!moldy.xdr)
   fprintf(fp, "xdr=%d\n", moldy.xdr);
 
 /* Temperature options */
@@ -3181,19 +3182,19 @@ fprintf(fp, "charge-unit=%-.15g\n", moldy.charge_unit);
 fprintf(fp, "length-unit=%-.15g\n", moldy.length_unit);
 
 /* Cutoff and Ewald sum */
-if (moldy.auto_cutoff )
+if (moldy.auto_cutoff)
   {
   if (moldy.cutoff > 0)
      fprintf(fp, "cutoff=%g\n", moldy.cutoff);
   fputs("alpha=0\n", fp);
-  if (moldy.kcutoff > 0 )
+  if (moldy.kcutoff > 0)
      fprintf(fp, "k-cutoff=%g\n", moldy.kcutoff);
   }
 else
   {
   if (moldy.real_only)
     {
-    if (!moldy.ewald )
+    if (!moldy.ewald)
       fputs("alpha=-1\n", fp);
     else
       {
@@ -3210,7 +3211,7 @@ else
       fprintf(fp, "cutoff=%g\n", moldy.cutoff);
     if (moldy.alpha > 0)
       fprintf(fp, "alpha=%g\n", moldy.alpha);
-    if (moldy.kcutoff > 0 )
+    if (moldy.kcutoff > 0)
       fprintf(fp, "k-cutoff=%g\n", moldy.kcutoff);
     }
   }
@@ -3221,16 +3222,16 @@ fprintf(fp, "roll-interval=%d\n", moldy.roll_int);
 fprintf(fp, "print-interval=%d\n", moldy.print_int);
 fprintf(fp, "begin-average=%d\n", moldy.av_start);
 fprintf(fp, "average-interval=%d\n", moldy.av_int);
-if (moldy.av_reset )
+if (moldy.av_reset)
   fprintf(fp, "reset-averages=%d\n", moldy.av_reset);
 fprintf(fp, "backup-interval=%d\n", moldy.backup_int);
 
 /* Other options */
-if (moldy.strict )
+if (moldy.strict)
   fprintf(fp, "strict-cutoff=%d\n", 1);
-if (moldy.surf )
+if (moldy.surf)
   fprintf(fp, "surface-dipole=%d\n", 1);
-if (moldy.subcell )
+if (moldy.subcell)
   fprintf(fp, "subcell=%g\n", moldy.subcell);
 
 /* RDF settings */
@@ -3283,7 +3284,7 @@ GSList *type_list;
 if (data == NULL)
   return(1);
 
-if (strlen(data->moldy.restart_file) > 0 )
+if (strlen(data->moldy.restart_file) > 0)
   return(1);
 
 /* Break up molecules if bonds turned off */
@@ -3302,7 +3303,7 @@ repeat_y = data->image_limit[3]+data->image_limit[2];
 repeat_z = data->image_limit[5]+data->image_limit[4];
 repeat = repeat_x * repeat_y * repeat_z;
 
-if (!g_ascii_strcasecmp(data->moldy.control_file, data->moldy.sysspec_file) ) /* Append to control file */
+if (!g_ascii_strcasecmp(data->moldy.control_file, data->moldy.sysspec_file)) /* Append to control file */
   fp = fopen(filename, "a");
 else
   fp = fopen(filename, "wt");
@@ -3314,7 +3315,7 @@ if (!fp)
   }
 
 #if DEBUG_WRITE_SYSSPEC
-if (!g_ascii_strcasecmp(data->moldy.control_file, data->moldy.sysspec_file) ) /* Append to control file */
+if (!g_ascii_strcasecmp(data->moldy.control_file, data->moldy.sysspec_file)) /* Append to control file */
   printf("Appending sys-spec info to %s\n", filename);
 else
   printf("Writing sys-spec info to %s\n", filename);
@@ -3333,7 +3334,7 @@ tp = time(NULL);
 fprintf(fp, "# System specification file written by GDIS on %s", ctime((&tp)));
 
 fprintf(fp, "# %s\n", data->basename);
-if (g_ascii_strcasecmp(data->moldy.title, "") )
+if (g_ascii_strcasecmp(data->moldy.title, ""))
   fprintf(fp, "# %s\n", data->moldy.title);
 
 for (slist = data->moldy.species; slist; slist = g_slist_next(slist))
@@ -3366,7 +3367,7 @@ fprintf(fp, "end\n");
 #endif 
 
 /* If no potentials specified, assume same no of parameters as LJ */
-if (ptype < 0 || ptype > 5 )
+if (ptype < 0 || ptype > 5)
   ptype = 0;
 
 fprintf(fp, "%s\n", potspec[ptype].name);
@@ -3388,7 +3389,7 @@ while(potlist != NULL)
        j = type->id;
     }
 
-  if (i > 0 && j > 0 )  
+  if (i > 0 && j > 0)  
     {
     fprintf(fp, "  %d   %d ", i, j);
     for(k=0; k < potspec[ptype].npar; k++)
@@ -3412,12 +3413,12 @@ for(i=0; i < num_unique; i++)
       }
 fprintf(fp, "end\n");
 
-if (data->periodic == 3 )
+if (data->periodic == 3)
   {
 #if DEBUG_WRITE_SYSSPEC
   puts("Writing molecule coordinates.");
 #endif 
-  if (num_species > 0 )
+  if (num_species > 0)
     {
     fprintf(fp, "%9.4f %9.4f %9.4f %9.4f  %9.4f  %9.4f  ",
        data->pbc[0], data->pbc[1], data->pbc[2],
@@ -3425,11 +3426,11 @@ if (data->periodic == 3 )
 
     fprintf(fp, "%d %d %d\n", repeat_x, repeat_y, repeat_z);
 
-    for (mlist=data->moldy.species ; mlist ; mlist=g_slist_next(mlist))
+    for (mlist=data->moldy.species; mlist; mlist=g_slist_next(mlist))
       {
       species = (struct moldyspec_pak *) mlist->data;
 
-      for (clist=species->mols ; clist ; clist=g_slist_next(clist))
+      for (clist=species->mols; clist; clist=g_slist_next(clist))
         {
         mole = (struct mol_pak *) clist->data;
 
@@ -3439,11 +3440,11 @@ if (data->periodic == 3 )
           vecmat(data->ilatmat, x);  /* Convert cofm to fractional coords */
 
         /* Ensure that coords are between [0,1) */
-          for (j=3; j--; )
+          for (j=3; j--;)
             {
             x[j] -= floor(x[j]);
             if (fabs(fmod(x[j],1)) < 5*FRACTION_TOLERANCE
-                || fabs(x[j]-1.0)  < 5*FRACTION_TOLERANCE ) 
+                || fabs(x[j]-1.0)  < 5*FRACTION_TOLERANCE) 
               x[j] = 0.0;
             }
           }

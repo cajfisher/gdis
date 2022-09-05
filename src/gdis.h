@@ -297,7 +297,7 @@ enum {REGION1A, REGION2A, REGION1B, REGION2B};
 /* selection modes */
 enum {CLEAN, START, UPDATE, STOP, ASSIGN, RECALL, RELEASE};
 
-/* Switches for atom list order in Moldy and DL_POLY */ /* Added by C. Fisher 2014 */
+/* Switches for atom list order in Moldy and DL_POLY */
 enum { NONE, CATION_ANION, ANION_CATION, CHARGE_LOW2HIGH,
        CHARGE_HIGH2LOW, SIZE_LOW2HIGH, SIZE_HIGH2LOW,
        MASS_LOW2HIGH, MASS_HIGH2LOW, NAME_A2Z, NAME_Z2A };

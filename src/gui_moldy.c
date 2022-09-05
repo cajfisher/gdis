@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2022 by Craig Andrew James Fisher
+Copyright (C) 2003 by Craig Andrew James Fisher
 Copyright (C) 2000 by Sean David Fleming
 
 sean@ivec.org
@@ -2221,7 +2221,7 @@ if( model->id == MORPH || model->periodic == 2)
 moldy_files_init(model);
 
 /* request a moldy dialog */
-dialog = dialog_request(MOLDY, "MOLDY configuration", NULL, moldy_cleanup, model);
+dialog = dialog_request(MOLDY, "MOLDY", NULL, moldy_cleanup, model);
 if (!dialog)
   return;
 window = dialog_window(dialog);

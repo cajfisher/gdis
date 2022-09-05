@@ -438,7 +438,6 @@ printf("new dipole: %f\n", data->gulp.sdipole);
 sprintf(txt, "New surface dipole: %f\n", data->gulp.sdipole);
 gui_text_show(STANDARD, txt);
 
-gui_refresh(GUI_MODEL_PROPERTIES);
 redraw_canvas(SINGLE);
 }
 
@@ -647,6 +646,120 @@ data->rmax = 5.0*RMAX_FUDGE;
 tree_model_add(data);
 tree_select_model(data);
 redraw_canvas(SINGLE);
+}
+
+/*******************/
+/* atom order hook */
+/*******************/
+gint event_atom_order_modify(GtkWidget *w, gpointer *obj)
+{
+gint id, choice=0;
+const gchar *entry;
+
+/* checks */
+g_return_val_if_fail(obj != NULL, FALSE);
+
+entry = gtk_entry_get_text(GTK_ENTRY(GTK_COMBO(obj)->entry));
+if (g_ascii_strncasecmp(entry, "Cations", 7) == 0)
+  choice = CATION_ANION;
+else if (g_ascii_strncasecmp(entry, "Anions", 6) == 0)
+  choice = ANION_CATION;
+else if (g_ascii_strncasecmp(entry, "Charges large", 13) == 0)
+  choice = CHARGE_HIGH2LOW;
+else if (g_ascii_strncasecmp(entry, "Charges small", 13) == 0)
+  choice = CHARGE_LOW2HIGH;
+else if (g_ascii_strncasecmp(entry, "Sizes large", 11) == 0)
+  choice = SIZE_HIGH2LOW;
+else if (g_ascii_strncasecmp(entry, "Sizes small", 11) == 0)
+  choice = SIZE_LOW2HIGH;
+else if (g_ascii_strncasecmp(entry, "Masses large", 12) == 0)
+  choice = MASS_HIGH2LOW;
+else if (g_ascii_strncasecmp(entry, "Masses small", 12) == 0)
+  choice = MASS_LOW2HIGH;
+else if (g_ascii_strncasecmp(entry, "Names A", 7) == 0)
+  choice = NAME_A2Z;
+else if (g_ascii_strncasecmp(entry, "Names Z", 7) == 0)
+  choice = NAME_Z2A;
+else if (g_ascii_strncasecmp(entry, "None", 4) == 0)
+  choice = NONE;
+
+/* ascertain type of modification required */
+id = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(obj), "id"));
+
+switch(id)
+  {
+  case ATOM_ORDER_TYPE_1:
+    sysenv.atom_order[0] = choice;
+  break;
+  case ATOM_ORDER_TYPE_2:
+    sysenv.atom_order[1] = choice;
+  break;
+  case ATOM_ORDER_TYPE_3:
+    sysenv.atom_order[2] = choice;
+  break;
+  case ATOM_ORDER_TYPE_4:
+    sysenv.atom_order[3] = choice;
+  break;
+  }
+
+return(FALSE);
+}
+
+/***********************/
+/* molecule order hook */
+/***********************/
+gint event_molecule_order_modify(GtkWidget *w, gpointer *obj)
+{
+gint id, choice=0;
+const gchar *entry;
+
+/* checks */
+g_return_val_if_fail(obj != NULL, FALSE);
+
+entry = gtk_entry_get_text(GTK_ENTRY(GTK_COMBO(obj)->entry));
+if (g_ascii_strncasecmp(entry, "Cations", 7) == 0)
+  choice = CATION_ANION;
+else if (g_ascii_strncasecmp(entry, "Anions", 6) == 0)
+  choice = ANION_CATION;
+else if (g_ascii_strncasecmp(entry, "Charges large", 13) == 0)
+  choice = CHARGE_HIGH2LOW;
+else if (g_ascii_strncasecmp(entry, "Charges small", 13) == 0)
+  choice = CHARGE_LOW2HIGH;
+else if (g_ascii_strncasecmp(entry, "Sizes large", 11) == 0)
+  choice = SIZE_HIGH2LOW;
+else if (g_ascii_strncasecmp(entry, "Sizes small", 11) == 0)
+  choice = SIZE_LOW2HIGH;
+else if (g_ascii_strncasecmp(entry, "Masses large", 12) == 0)
+  choice = MASS_HIGH2LOW;
+else if (g_ascii_strncasecmp(entry, "Masses small", 12) == 0)
+  choice = MASS_LOW2HIGH;
+else if (g_ascii_strncasecmp(entry, "Names A", 7) == 0)
+  choice = NAME_A2Z;
+else if (g_ascii_strncasecmp(entry, "Names Z", 7) == 0)
+  choice = NAME_Z2A;
+else if (g_ascii_strncasecmp(entry, "None", 4) == 0)
+  choice = NONE;
+
+/* ascertain type of modification required */
+id = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(obj), "id"));
+
+switch(id)
+  {
+  case MOL_ORDER_TYPE_1:
+    sysenv.molecule_order[0] = choice;
+  break;
+  case MOL_ORDER_TYPE_2:
+    sysenv.molecule_order[1] = choice;
+  break;
+  case MOL_ORDER_TYPE_3:
+    sysenv.molecule_order[2] = choice;
+  break;
+  case MOL_ORDER_TYPE_4:
+    sysenv.molecule_order[3] = choice;
+  break;
+  }
+
+return(FALSE);
 }
 
 /***********************/
@@ -1269,11 +1382,11 @@ hbox = gtk_hbox_new(FALSE,0);
 gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
 
 label = gtk_label_new("Chirality  ");
-gtk_box_pack_start(GTK_BOX(hbox),label,FALSE,FALSE,0); 
+gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0); 
 spin = gui_direct_spin(NULL, &CEDIT.edit_chirality[0], 0, 99, 1, NULL, NULL, NULL);
-gtk_box_pack_start(GTK_BOX(hbox),spin,FALSE,FALSE,0); 
+gtk_box_pack_start(GTK_BOX(hbox), spin, FALSE, FALSE, 0); 
 spin = gui_direct_spin(NULL, &CEDIT.edit_chirality[1], 0, 99, 1, NULL, NULL, NULL);
-gtk_box_pack_start(GTK_BOX(hbox),spin,FALSE,FALSE,0); 
+gtk_box_pack_start(GTK_BOX(hbox), spin, FALSE, FALSE, 0); 
 
 /* basis atoms */
 /*
@@ -2559,6 +2672,225 @@ gtk_entry_set_text(GTK_ENTRY(w), "ffoplsaabon.itp");
 gui_button_x(NULL, gui_import_ff, dialog, hbox);
 }
 
+/***************************************/
+/* select menu item for order settings */
+/***************************************/
+void select_entry(int id, GString *entry)
+{
+switch(id)
+  {
+  case CATION_ANION:
+    g_string_assign(entry, "Cations before anions");
+    break;
+  case ANION_CATION:
+    g_string_assign(entry, "Anions before cations");
+    break;
+  case CHARGE_HIGH2LOW:
+    g_string_assign(entry, "Charges large to small");
+    break;
+  case CHARGE_LOW2HIGH:
+    g_string_assign(entry, "Charges small to large");
+    break;
+  case SIZE_HIGH2LOW:
+    g_string_assign(entry, "Sizes large to small");
+    break;
+  case SIZE_LOW2HIGH:
+    g_string_assign(entry, "Sizes small to large");
+    break;
+  case MASS_HIGH2LOW:
+    g_string_assign(entry, "Masses large to small");
+    break;
+  case MASS_LOW2HIGH:
+    g_string_assign(entry, "Masses small to large");
+    break;
+  case NAME_A2Z:
+    g_string_assign(entry, "Names A to Z");
+    break;
+  case NAME_Z2A:
+    g_string_assign(entry, "Names Z to A");
+    break;
+  case NONE:
+    g_string_assign(entry, "None");
+    break;
+  }
+return;
+}
+
+/*****************/
+/* settings page */
+/*****************/
+void settings_page(GtkWidget *box, gpointer dialog)
+{
+GList *list;
+GtkWidget *hbox, *vbox;
+GtkWidget *hbox1, *hbox2, *hbox3, *hbox4;
+GtkWidget *label, *combo;
+GString *entry;
+
+entry = g_string_new("");
+
+/* Editing options */
+vbox = gui_frame_vbox("Editing settings", FALSE, FALSE, box);
+
+gui_direct_check("Replace atoms when pasting", &sysenv.paste_replace,
+                  NULL, NULL, vbox);
+
+/* VASP version */
+vbox = gui_frame_vbox("VASP settings", FALSE, FALSE, box);
+
+gui_direct_check("Version 5.2 or later", &sysenv.vasp_version52,
+                  NULL, NULL, vbox);
+
+hbox = gui_frame_hbox(" Species order when writing files ", FALSE, FALSE, box);
+/* Atom list ordering options */
+vbox = gui_frame_vbox("Atom order", FALSE, FALSE, hbox);
+
+/* options */
+hbox1 = gtk_hbox_new(FALSE, 0);
+gtk_box_pack_start(GTK_BOX(vbox), hbox1, TRUE, TRUE, 0);
+label = gtk_label_new("  1st  ");
+gtk_box_pack_start(GTK_BOX(hbox1), label, FALSE, FALSE, 0);
+list = NULL;
+list = g_list_append(list, "None");
+list = g_list_append(list, "Cations before anions");
+list = g_list_append(list, "Anions before cations");
+list = g_list_append(list, "Charges small to large");
+list = g_list_append(list, "Charges large to small");
+list = g_list_append(list, "Sizes small to large");
+list = g_list_append(list, "Sizes large to small");
+list = g_list_append(list, "Masses small to large");
+list = g_list_append(list, "Masses large to small");
+list = g_list_append(list, "Names A to Z");
+list = g_list_append(list, "Names Z to A");
+
+select_entry(sysenv.atom_order[0], entry);
+
+combo = gtk_combo_new();
+gtk_entry_set_editable(GTK_ENTRY(GTK_COMBO(combo)->entry), FALSE);
+gtk_combo_set_popdown_strings(GTK_COMBO(combo), list);
+gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(combo)->entry), entry->str);
+gtk_box_pack_start(GTK_BOX(hbox1), combo, FALSE, FALSE, 0);
+g_signal_connect(GTK_OBJECT(GTK_COMBO(combo)->entry), "changed",
+                 GTK_SIGNAL_FUNC(event_atom_order_modify), (gpointer) combo);
+g_object_set_data(G_OBJECT(combo), "id", (gpointer) ATOM_ORDER_TYPE_1);
+
+hbox2 = gtk_hbox_new(FALSE, 0);
+gtk_box_pack_start(GTK_BOX(vbox), hbox2, FALSE, FALSE, 0);
+label = gtk_label_new("  2nd  ");
+gtk_box_pack_start(GTK_BOX(hbox2), label, FALSE, FALSE, 0);
+
+select_entry(sysenv.atom_order[1], entry);
+
+combo = gtk_combo_new();
+gtk_entry_set_editable(GTK_ENTRY(GTK_COMBO(combo)->entry), FALSE);
+gtk_combo_set_popdown_strings(GTK_COMBO(combo), list);
+gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(combo)->entry), entry->str);
+gtk_box_pack_start(GTK_BOX(hbox2), combo, FALSE, FALSE, 0);
+g_signal_connect(GTK_OBJECT(GTK_COMBO(combo)->entry), "changed",
+                 GTK_SIGNAL_FUNC(event_atom_order_modify), (gpointer) combo);
+g_object_set_data(G_OBJECT(combo), "id", (gpointer) ATOM_ORDER_TYPE_2);
+
+hbox3 = gtk_hbox_new(FALSE, 0);
+gtk_box_pack_start(GTK_BOX(vbox), hbox3, FALSE, FALSE, 0);
+label = gtk_label_new("  3rd  ");
+gtk_box_pack_start(GTK_BOX(hbox3), label, FALSE, FALSE, 0);
+
+select_entry(sysenv.atom_order[2], entry);
+
+combo = gtk_combo_new();
+gtk_entry_set_editable(GTK_ENTRY(GTK_COMBO(combo)->entry), FALSE);
+gtk_combo_set_popdown_strings(GTK_COMBO(combo), list);
+gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(combo)->entry), entry->str);
+gtk_box_pack_start(GTK_BOX(hbox3), combo, FALSE, FALSE, 0);
+g_signal_connect(GTK_OBJECT(GTK_COMBO(combo)->entry), "changed",
+                 GTK_SIGNAL_FUNC(event_atom_order_modify), (gpointer) combo);
+g_object_set_data(G_OBJECT(combo), "id", (gpointer) ATOM_ORDER_TYPE_3);
+
+hbox4 = gtk_hbox_new(FALSE, 0);
+gtk_box_pack_start(GTK_BOX(vbox), hbox4, FALSE, FALSE, 0);
+label = gtk_label_new("  4th  ");
+gtk_box_pack_start(GTK_BOX(hbox4), label, FALSE, FALSE, 0);
+
+select_entry(sysenv.atom_order[3], entry);
+
+combo = gtk_combo_new();
+gtk_entry_set_editable(GTK_ENTRY(GTK_COMBO(combo)->entry), FALSE);
+gtk_combo_set_popdown_strings(GTK_COMBO(combo), list);
+gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(combo)->entry), entry->str);
+gtk_box_pack_start(GTK_BOX(hbox4), combo, FALSE, FALSE, 0);
+g_signal_connect(GTK_OBJECT(GTK_COMBO(combo)->entry), "changed",
+                 GTK_SIGNAL_FUNC(event_atom_order_modify), (gpointer) combo);
+g_object_set_data(G_OBJECT(combo), "id", (gpointer) ATOM_ORDER_TYPE_4);
+
+/* Molecule list ordering options */
+vbox = gui_frame_vbox("Molecule order", FALSE, FALSE, hbox);
+
+/* options */
+hbox1 = gtk_hbox_new(FALSE, PANEL_SPACING);
+gtk_box_pack_start(GTK_BOX(vbox), hbox1, FALSE, FALSE, 0);
+label = gtk_label_new("  1st  ");
+gtk_box_pack_start(GTK_BOX(hbox1), label, FALSE, FALSE, 0);
+
+select_entry(sysenv.molecule_order[0], entry);
+
+combo = gtk_combo_new();
+gtk_entry_set_editable(GTK_ENTRY(GTK_COMBO(combo)->entry), FALSE);
+gtk_combo_set_popdown_strings(GTK_COMBO(combo), list);
+gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(combo)->entry), entry->str);
+gtk_box_pack_start(GTK_BOX(hbox1), combo, FALSE, FALSE, 0);
+g_signal_connect(GTK_OBJECT(GTK_COMBO(combo)->entry), "changed",
+                 GTK_SIGNAL_FUNC(event_molecule_order_modify), (gpointer) combo);
+g_object_set_data(G_OBJECT(combo), "id", (gpointer) MOL_ORDER_TYPE_1);
+
+select_entry(sysenv.molecule_order[1], entry);
+
+hbox2 = gtk_hbox_new(FALSE, PANEL_SPACING);
+gtk_box_pack_start(GTK_BOX(vbox), hbox2, FALSE, FALSE, 0);
+label = gtk_label_new("  2nd  ");
+gtk_box_pack_start(GTK_BOX(hbox2), label, FALSE, FALSE, 0);
+
+combo = gtk_combo_new();
+gtk_entry_set_editable(GTK_ENTRY(GTK_COMBO(combo)->entry), FALSE);
+gtk_combo_set_popdown_strings(GTK_COMBO(combo), list);
+gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(combo)->entry), entry->str);
+gtk_box_pack_start(GTK_BOX(hbox2), combo, FALSE, FALSE, 0);
+g_signal_connect(GTK_OBJECT(GTK_COMBO(combo)->entry), "changed",
+                 GTK_SIGNAL_FUNC(event_molecule_order_modify), (gpointer) combo);
+g_object_set_data(G_OBJECT(combo), "id", (gpointer) MOL_ORDER_TYPE_2);
+
+hbox3 = gtk_hbox_new(FALSE, PANEL_SPACING);
+gtk_box_pack_start(GTK_BOX(vbox), hbox3, FALSE, FALSE, 0);
+label = gtk_label_new("  3rd  ");
+gtk_box_pack_start(GTK_BOX(hbox3), label, FALSE, FALSE, 0);
+
+select_entry(sysenv.molecule_order[2], entry);
+
+combo = gtk_combo_new();
+gtk_entry_set_editable(GTK_ENTRY(GTK_COMBO(combo)->entry), FALSE);
+gtk_combo_set_popdown_strings(GTK_COMBO(combo), list);
+gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(combo)->entry), entry->str);
+gtk_box_pack_start(GTK_BOX(hbox3), combo, FALSE, FALSE, 0);
+g_signal_connect(GTK_OBJECT(GTK_COMBO(combo)->entry), "changed",
+                 GTK_SIGNAL_FUNC(event_molecule_order_modify), (gpointer) combo);
+g_object_set_data(G_OBJECT(combo), "id", (gpointer) MOL_ORDER_TYPE_3);
+
+hbox4 = gtk_hbox_new(FALSE, PANEL_SPACING);
+gtk_box_pack_start(GTK_BOX(vbox), hbox4, FALSE, FALSE, 0);
+label = gtk_label_new("  4th  ");
+gtk_box_pack_start(GTK_BOX(hbox4), label, FALSE, FALSE, 0);
+
+select_entry(sysenv.molecule_order[3], entry);
+
+combo = gtk_combo_new();
+gtk_entry_set_editable(GTK_ENTRY(GTK_COMBO(combo)->entry), FALSE);
+gtk_combo_set_popdown_strings(GTK_COMBO(combo), list);
+gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(combo)->entry), entry->str);
+gtk_box_pack_start(GTK_BOX(hbox4), combo, FALSE, FALSE, 0);
+g_signal_connect(GTK_OBJECT(GTK_COMBO(combo)->entry), "changed",
+                 GTK_SIGNAL_FUNC(event_molecule_order_modify), (gpointer) combo);
+g_object_set_data(G_OBJECT(combo), "id", (gpointer) MOL_ORDER_TYPE_4);
+}
+
 /**************************/
 /* dialog update function */
 /**************************/
@@ -2632,6 +2964,12 @@ label = gtk_label_new("Library");
 gtk_notebook_append_page(GTK_NOTEBOOK(notebook), page, label);
 gui_library_window(page);
 
+/* add page */
+page = gtk_vbox_new(FALSE,0);
+label = gtk_label_new("Settings");
+gtk_notebook_append_page(GTK_NOTEBOOK(notebook), page, label);
+settings_page(page, dialog);
+
 /* terminating buttons */
 gui_stock_button(GTK_STOCK_CLOSE, dialog_destroy, dialog,
                    GTK_DIALOG(window)->action_area);
@@ -2641,9 +2979,9 @@ gtk_widget_show_all(window);
 /* init the transformation values */
 reset_transmat();
 
-for(i=0;i<12;i++)
-	g_signal_connect(GTK_OBJECT(CEDIT.transmat[i]), "changed",
-			GTK_SIGNAL_FUNC(change_transmat), GINT_TO_POINTER(i));
+for(i=0; i<12; i++)
+  g_signal_connect(GTK_OBJECT(CEDIT.transmat[i]), "changed",
+          GTK_SIGNAL_FUNC(change_transmat), GINT_TO_POINTER(i));
 }
 
 /***********************************************/
@@ -3051,21 +3389,18 @@ if (CEDIT.apd_core->shell)
     text = gtk_entry_get_text(GTK_ENTRY(CEDIT.apd_x));
     CEDIT.apd_core->x[0] = str_to_float(text);
     coords_compute(model);
-    connect_refresh(model);
     break;
 
   case COORD_Y:
     text = gtk_entry_get_text(GTK_ENTRY(CEDIT.apd_y));
     CEDIT.apd_core->x[1] = str_to_float(text);
     coords_compute(model);
-    connect_refresh(model);
     break;
 
   case COORD_Z:
     text = gtk_entry_get_text(GTK_ENTRY(CEDIT.apd_z));
     CEDIT.apd_core->x[2] = str_to_float(text);
     coords_compute(model);
-    connect_refresh(model);
     break;
 
   case SOF:
@@ -3399,3 +3734,4 @@ gui_button_x("Mark as ghost", select_flag_ghost, NULL, vbox);
 gui_button_x("Mark as normal", select_flag_normal, NULL, vbox);
 
 }
+

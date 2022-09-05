@@ -1119,19 +1119,19 @@ vbox = gui_frame_vbox(NULL, FALSE, FALSE, vbox1);
 list = NULL;
 list = g_list_prepend(list, "perspective");
 list = g_list_prepend(list, "orthographic");
-camera_proj_entry = gui_pulldown_new("projection ", list, FALSE, vbox);
+camera_proj_entry = gui_pulldown_new("Projection ", list, FALSE, vbox);
 
 /* focal point */
 list = NULL;
 list = g_list_prepend(list, "variable");
 list = g_list_prepend(list, "origin");
-camera_mode_entry = gui_pulldown_new("focal point", list, FALSE, vbox);
+camera_mode_entry = gui_pulldown_new("Focal point", list, FALSE, vbox);
 
 /* field of view */
-camera_fov_entry =  gui_text_entry("field of view", NULL, FALSE, FALSE, vbox);
+camera_fov_entry =  gui_text_entry("Field of view", NULL, FALSE, FALSE, vbox);
 
 /* zoom */
-camera_zoom_entry =  gui_text_entry("zoom factor", NULL, TRUE, FALSE, vbox);
+camera_zoom_entry =  gui_text_entry("Zoom factor", NULL, TRUE, FALSE, vbox);
 g_signal_connect(GTK_OBJECT(camera_zoom_entry), "activate",
                  GTK_SIGNAL_FUNC(gui_camera_zoom_changed),  NULL);
 
@@ -1226,7 +1226,7 @@ gui_button("Delete", gui_delete_waypoint, camera_tree, hbox, TT);
 
 /* TODO - a mechanism so that whenever a switch_model happens a */
 /* function can be automatically called to update stuff */
-/* AND is destroyed whenver the widget it's attached to is destroyed */
+/* AND is destroyed whenever the widget it's attached to is destroyed */
 
 /* fill out the dialog */
 gui_camera_refresh();

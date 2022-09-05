@@ -169,7 +169,13 @@ for (;;)
 
 /* povray executable */
   if (g_ascii_strncasecmp("povray_p", *buff, 8) == 0)
-    sysenv.povray_path = parse_strip_newline(&line[12]);
+    {
+    if (num_tokens > 1)
+      {
+      g_free(sysenv.povray_path);
+      sysenv.povray_path = parse_strip_newline(&line[12]);
+      }
+    }
 
   if (g_ascii_strncasecmp("povray_e", *buff, 8) == 0)
     {
@@ -182,7 +188,13 @@ for (;;)
 
 /* animation creation tool */
   if (g_ascii_strncasecmp("convert_p", *buff, 9) == 0)
-    sysenv.convert_path = parse_strip_newline(&line[13]);
+    {
+    if (num_tokens > 1)
+      {
+      g_free(sysenv.convert_path);
+      sysenv.convert_path = parse_strip_newline(&line[13]);
+      }
+    }
 
   if (g_ascii_strncasecmp("convert_e", *buff, 9) == 0)
     {
@@ -195,7 +207,13 @@ for (;;)
 
 /* image viewing */
   if (g_ascii_strncasecmp("viewer_p", *buff, 8) == 0)
-    sysenv.viewer_path = parse_strip_newline(&line[12]);
+    {
+    if (num_tokens > 1)
+      {
+      g_free(sysenv.viewer_path);
+      sysenv.viewer_path = parse_strip_newline(&line[12]);
+      }
+    }
 
   if (g_ascii_strncasecmp("viewer_e", *buff, 8) == 0)
     {
@@ -208,7 +226,13 @@ for (;;)
 
 /* GULP */
   if (g_ascii_strncasecmp("gulp_p", *buff, 6) == 0)
-    sysenv.gulp_path = parse_strip_newline(&line[10]);
+    {
+    if (num_tokens > 1)
+      {
+      g_free(sysenv.gulp_path);
+      sysenv.gulp_path = parse_strip_newline(&line[10]);
+      }
+    }
 
   if (g_ascii_strncasecmp("gulp_e", *buff, 6) == 0)
     {
@@ -218,38 +242,63 @@ for (;;)
       sysenv.gulp_exe = g_strdup(*(buff+1));
       }
     }
+/* moldy */
+  if (g_ascii_strncasecmp("moldy_p", *buff, 7) == 0)
+    {
+    if (num_tokens > 1)
+      {
+      g_free(sysenv.moldy_path);
+      sysenv.moldy_path = parse_strip_newline(&line[11]);
+      }
+    }
+
+  if (g_ascii_strncasecmp("moldy_e", *buff, 7) == 0)
+    {
+    if (num_tokens > 1)
+      {
+      g_free(sysenv.moldy_exe);
+      sysenv.moldy_exe = g_strdup(*(buff+1));
+      }
+    }
+
+  if (g_ascii_strncasecmp("VASP_v", *buff, 6) == 0)
+    {
+    if (num_tokens > 1)
+      sysenv.vasp_version52 = (gint) str_to_float(*(buff+1));
+    }
+
 /* OpenGL drawing font */
-  if (g_ascii_strncasecmp("gl_font",*buff,7) == 0)
+  if (g_ascii_strncasecmp("gl_font", *buff, 7) == 0)
     if (num_tokens > 1)
       strcpy(sysenv.gl_fontname, g_strstrip(&line[8]));
 
 /* model tree box */
-  if (g_ascii_strncasecmp("mtb",*buff,3) == 0)
+  if (g_ascii_strncasecmp("mtb", *buff,3) == 0)
     if (num_tokens > 1)
       sysenv.mtb_on = (gint) str_to_float(*(buff+1));
 
 /* model properties box */
-  if (g_ascii_strncasecmp("mpb",*buff,3) == 0)
+  if (g_ascii_strncasecmp("mpb", *buff, 3) == 0)
     if (num_tokens > 1)
       sysenv.mpb_on = (gint) str_to_float(*(buff+1));
 
 /* model symmetry box */
-  if (g_ascii_strncasecmp("msb",*buff,3) == 0)
+  if (g_ascii_strncasecmp("msb", *buff, 3) == 0)
     if (num_tokens > 1)
       sysenv.msb_on = (gint) str_to_float(*(buff+1));
 
 /* atom properties box */
-  if (g_ascii_strncasecmp("apb",*buff,3) == 0)
+  if (g_ascii_strncasecmp("apb", *buff, 3) == 0)
     if (num_tokens > 1)
       sysenv.apb_on = (gint) str_to_float(*(buff+1));
 
 /* halo type */
-  if (g_ascii_strncasecmp("halo",*buff,4) == 0)
+  if (g_ascii_strncasecmp("halo", *buff, 4) == 0)
     if (num_tokens > 1)
       sysenv.render.halos = (gint) str_to_float(*(buff+1));
 
 /* low quality rotation */
-  if (g_ascii_strncasecmp("fast",*buff,4) == 0)
+  if (g_ascii_strncasecmp("fast_rotation", *buff, 4) == 0)
     if (num_tokens > 1)
       sysenv.render.fast_rotation = (gint) str_to_float(*(buff+1));
 
@@ -280,6 +329,243 @@ for (;;)
       sysenv.render.rsurf_colour[2] = str_to_float(*(buff+3));
       }
     }
+
+  if (g_ascii_strncasecmp("paste_rep", *buff, 9) == 0)
+    {
+    if (num_tokens > 1)
+      sysenv.paste_replace = (gint) str_to_float(*(buff+1));
+    }
+
+  if (g_ascii_strncasecmp("atom_order_1", *buff, 12) == 0)
+    {
+    if (num_tokens > 1)
+      sysenv.atom_order[0] = (gint) str_to_float(*(buff+1));
+    }
+
+  if (g_ascii_strncasecmp("atom_order_2", *buff, 12) == 0)
+    {
+    if (num_tokens > 1)
+      sysenv.atom_order[1] = (gint) str_to_float(*(buff+1));
+    }
+
+  if (g_ascii_strncasecmp("atom_order_3", *buff, 12) == 0)
+    {
+    if (num_tokens > 1)
+      sysenv.atom_order[2] = (gint) str_to_float(*(buff+1));
+    }
+
+  if (g_ascii_strncasecmp("atom_order_4", *buff, 12) == 0)
+    {
+    if (num_tokens > 1)
+      sysenv.atom_order[3] = (gint) str_to_float(*(buff+1));
+    }
+
+  if (g_ascii_strncasecmp("molecule_order_1", *buff, 16) == 0)
+    {
+    if (num_tokens > 1)
+      sysenv.molecule_order[0] = (gint) str_to_float(*(buff+1));
+    }
+
+  if (g_ascii_strncasecmp("molecule_order_2", *buff, 16) == 0)
+    {
+    if (num_tokens > 1)
+      sysenv.molecule_order[1] = (gint) str_to_float(*(buff+1));
+    }
+
+  if (g_ascii_strncasecmp("molecule_order_3", *buff, 16) == 0)
+    {
+    if (num_tokens > 1)
+      sysenv.molecule_order[2] = (gint) str_to_float(*(buff+1));
+    }
+
+  if (g_ascii_strncasecmp("molecule_order_4", *buff, 16) == 0)
+    {
+    if (num_tokens > 1)
+      sysenv.molecule_order[3] = (gint) str_to_float(*(buff+1));
+    }
+
+  if (g_ascii_strcasecmp(*buff, "colour_fg") == 0)
+    {
+    if (num_tokens > 3)
+      {
+      sysenv.render.fg_colour[0] = str_to_float(*(buff+1));
+      sysenv.render.fg_colour[1] = str_to_float(*(buff+2));
+      sysenv.render.fg_colour[2] = str_to_float(*(buff+3));
+      }
+    }
+  if (g_ascii_strncasecmp(*buff, "colour_bg", 9) == 0)
+    {
+    if (num_tokens > 3)
+      {
+      sysenv.render.bg_colour[0] = str_to_float(*(buff+1));
+      sysenv.render.bg_colour[1] = str_to_float(*(buff+2));
+      sysenv.render.bg_colour[2] = str_to_float(*(buff+3));
+      }
+    }
+  if (g_ascii_strncasecmp(*buff, "colour_morph", 11) == 0)
+    {
+    if (num_tokens > 3)
+      {
+      sysenv.render.morph_colour[0] = str_to_float(*(buff+1));
+      sysenv.render.morph_colour[1] = str_to_float(*(buff+2));
+      sysenv.render.morph_colour[2] = str_to_float(*(buff+3));
+      }
+    }
+  if (g_ascii_strncasecmp("colour_rsurf", *buff, 12) == 0)
+    {
+    if (num_tokens > 3)
+      {
+      sysenv.render.rsurf_colour[0] = str_to_float(*(buff+1));
+      sysenv.render.rsurf_colour[1] = str_to_float(*(buff+2));
+      sysenv.render.rsurf_colour[2] = str_to_float(*(buff+3));
+      }
+    }
+  if (g_ascii_strcasecmp(*buff, "colour_title") == 0)
+    {
+    if (num_tokens > 3)
+      {
+      sysenv.render.title_colour[0] = str_to_float(*(buff+1));
+      sysenv.render.title_colour[1] = str_to_float(*(buff+2));
+      sysenv.render.title_colour[2] = str_to_float(*(buff+3));
+      }
+    }
+  if (g_ascii_strcasecmp(*buff, "colour_label") == 0)
+    {
+    if (num_tokens > 3)
+      {
+      sysenv.render.label_colour[0] = str_to_float(*(buff+1));
+      sysenv.render.label_colour[1] = str_to_float(*(buff+2));
+      sysenv.render.label_colour[2] = str_to_float(*(buff+3));
+      }
+    }
+  if (g_ascii_strcasecmp("scale_ballsize", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.scale_ball_size = (gint)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("antialias", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.antialias = (gint)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("shadowless", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.shadowless = (gint)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("perspective", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.perspective = (gint)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("fog", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.fog = (gint)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("fog_density", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.fog_density = (gdouble)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("fog_start", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.fog_start = (gdouble)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("wire_surface", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.wire_surface = (gint)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("wire_show_hidden", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.wire_show_hidden = (gint)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("no_povray_exec", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.no_povray_exec = (gint)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("no_keep_tempfiles", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.no_keep_tempfiles = (gint)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("sphere_quality", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.sphere_quality = (gdouble)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("cylinder_quality", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.cylinder_quality = (gdouble)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("ball_radius", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.ball_radius = (gdouble)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("stick_thickness", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.stick_thickness = (gdouble)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("line_thickness", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.line_thickness = (gdouble)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("frame_thickness", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.frame_thickness = (gdouble)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("geom_line_width", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.geom_line_width = (gdouble)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("cpk_scale", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.cpk_scale = (gdouble)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("ribbon_curvature", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.ribbon_curvature = (gdouble)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("ribbon_thickness", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.ribbon_thickness = (gdouble)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("ribbon_quality", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.ribbon_quality = (gint)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("ahl_strength", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.ahl_strength = (gdouble)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("ahl_size", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.ahl_size = (gdouble)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("shl_strength", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.shl_strength = (gdouble)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("shl_size", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.shl_size = (gdouble)str_to_float(*(buff+1));
+/*  if (g_ascii_strcasecmp("image_width", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.image_width = (gdouble)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("image_height", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.image_height = (gdouble)str_to_float(*(buff+1)); */
+  if (g_ascii_strcasecmp("zone_size", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.zone_size = (gdouble)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("transmit", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.transmit = (gdouble)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("ghost_opacity", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.ghost_opacity = (gdouble)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("ambience", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.ambience = (gdouble)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("auto_quality", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.auto_quality = (gint)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("mpeg_quality", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.mpeg_quality = (gint)str_to_float(*(buff+1));
+
+  if (g_ascii_strcasecmp("ribbon_colour", *buff) == 0)
+    {
+    if (num_tokens > 3)
+      {
+      sysenv.render.ribbon_colour[0] = str_to_float(*(buff+1));
+      sysenv.render.ribbon_colour[1] = str_to_float(*(buff+2));
+      sysenv.render.ribbon_colour[2] = str_to_float(*(buff+3));
+      }
+    }
+
+  if (g_ascii_strcasecmp("stereo_use_frustum", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.stereo_use_frustum = (gint)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("stereo_eye_offset", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.stereo_eye_offset = str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("stereo_parallax", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.stereo_parallax = str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("stereo_left", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.stereo_left = (gint)str_to_float(*(buff+1));
+  if (g_ascii_strcasecmp("stereo_right", *buff) == 0)
+    if (num_tokens > 1)
+      sysenv.render.stereo_right = (gint)str_to_float(*(buff+1));
 
 /* cleanup */
   g_strfreev(buff);
@@ -314,18 +600,19 @@ if (sysenv.tpane)
   if (GTK_IS_WIDGET(sysenv.tpane))
     sysenv.tray_height = GTK_WIDGET(sysenv.tpane)->allocation.height;
 
-fprintf(fp,"gdis %f\n", VERSION);
-fprintf(fp,"canvas %d\n", sysenv.canvas);
-fprintf(fp,"size %d %d\n", sysenv.width,sysenv.height);
-fprintf(fp,"pane %d %d\n", sysenv.tree_width, sysenv.tray_height);
-fprintf(fp,"divider %d\n", sysenv.tree_divider);
-fprintf(fp,"gl_font %s\n", sysenv.gl_fontname);
-fprintf(fp,"mtb %d\n", sysenv.mtb_on);
-fprintf(fp,"mpb %d\n", sysenv.mpb_on);
-fprintf(fp,"msb %d\n", sysenv.msb_on);
-fprintf(fp,"apb %d\n", sysenv.apb_on);
-fprintf(fp,"halos %d\n", sysenv.render.halos);
-fprintf(fp,"fast %d\n", sysenv.render.fast_rotation);
+fprintf(fp, "gdis %f\n", VERSION);
+fprintf(fp, "canvas %d\n", sysenv.canvas);
+fprintf(fp, "size %d %d\n", sysenv.width,sysenv.height);
+fprintf(fp, "pane %d %d\n", sysenv.tree_width, sysenv.tray_height);
+fprintf(fp, "divider %d\n", sysenv.tree_divider);
+fprintf(fp, "gl_font %s\n", sysenv.gl_fontname);
+fprintf(fp, "mtb %d\n", sysenv.mtb_on);
+fprintf(fp, "mpb %d\n", sysenv.mpb_on);
+fprintf(fp, "msb %d\n", sysenv.msb_on);
+fprintf(fp, "apb %d\n", sysenv.apb_on);
+fprintf(fp, "halos %d\n", sysenv.render.halos);
+fprintf(fp, "fast_rotation %d\n", sysenv.render.fast_rotation);
+
 
 fprintf(fp,"colour_bg %f %f %f\n", sysenv.render.bg_colour[0],
                                    sysenv.render.bg_colour[1],
@@ -355,19 +642,94 @@ if (sysenv.povray_path)
   fprintf(fp,"povray_path %s\n", sysenv.povray_path);
 if (sysenv.viewer_path)
   fprintf(fp,"viewer_path %s\n", sysenv.viewer_path);
+if (sysenv.moldy_path)
+  fprintf(fp,"moldy_path %s\n", sysenv.moldy_path);
 
+fprintf(fp, "babel_exe %s\n", sysenv.babel_exe);
+fprintf(fp, "convert_exe %s\n", sysenv.convert_exe);
+fprintf(fp, "gulp_exe %s\n", sysenv.gulp_exe);
+fprintf(fp, "gamess_exe %s\n", sysenv.gamess_exe);
+fprintf(fp, "vasp_exe %s\n", sysenv.vasp_exe);
+fprintf(fp, "uspex_exe %s\n", sysenv.uspex_exe);
+fprintf(fp, "mpirun_exe %s\n", sysenv.mpirun_exe);
+fprintf(fp, "povray_exe %s\n", sysenv.povray_exe);
+fprintf(fp, "viewer_exe %s\n", sysenv.viewer_exe);
+fprintf(fp, "moldy_exe %s\n", sysenv.moldy_exe);
 
-fprintf(fp,"babel_exe %s\n", sysenv.babel_exe);
-fprintf(fp,"convert_exe %s\n", sysenv.convert_exe);
-fprintf(fp,"gulp_exe %s\n", sysenv.gulp_exe);
-fprintf(fp,"gamess_exe %s\n", sysenv.gamess_exe);
-fprintf(fp,"vasp_exe %s\n", sysenv.vasp_exe);
-fprintf(fp,"uspex_exe %s\n", sysenv.uspex_exe);
-fprintf(fp,"mpirun_exe %s\n", sysenv.mpirun_exe);
-fprintf(fp,"povray_exe %s\n", sysenv.povray_exe);
-fprintf(fp,"viewer_exe %s\n", sysenv.viewer_exe);
+fprintf(fp, "colour_fg %f %f %f\n", sysenv.render.fg_colour[0],
+                                    sysenv.render.fg_colour[1],
+                                    sysenv.render.fg_colour[2]);
+fprintf(fp, "colour_bg %f %f %f\n", sysenv.render.bg_colour[0],
+                                    sysenv.render.bg_colour[1],
+                                    sysenv.render.bg_colour[2]);
+fprintf(fp, "colour_morph %f %f %f\n", sysenv.render.morph_colour[0],
+                                      sysenv.render.morph_colour[1],
+                                      sysenv.render.morph_colour[2]);
+fprintf(fp, "colour_rsurf %f %f %f\n", sysenv.render.rsurf_colour[0],
+                                       sysenv.render.rsurf_colour[1],
+                                       sysenv.render.rsurf_colour[2]);
+fprintf(fp, "colour_title %f %f %f\n", sysenv.render.title_colour[0],
+                                       sysenv.render.title_colour[1],
+                                       sysenv.render.title_colour[2]);
+fprintf(fp, "colour_label %f %f %f\n", sysenv.render.label_colour[0],
+                                       sysenv.render.label_colour[1],
+                                       sysenv.render.label_colour[2]);
 
+fprintf(fp, "ribbon_colour %f %f %f\n", sysenv.render.ribbon_colour[0],
+                                       sysenv.render.ribbon_colour[1],
+                                       sysenv.render.ribbon_colour[2]);
 
+fprintf(fp, "perspective %d\n", sysenv.render.perspective);
+fprintf(fp, "antialias %d\n", sysenv.render.antialias);
+fprintf(fp, "shadowless %d\n", sysenv.render.shadowless);
+fprintf(fp, "fog %d\n", sysenv.render.fog);
+fprintf(fp, "wire_surface %d\n", sysenv.render.wire_surface);
+fprintf(fp, "wire_show_hidden %d\n", sysenv.render.wire_show_hidden);
+fprintf(fp, "scale_ballsize %d\n", sysenv.render.scale_ball_size);
+fprintf(fp, "no_povray_exec %d\n", sysenv.render.no_povray_exec);
+fprintf(fp, "no_keep_tempfiles %d\n", sysenv.render.no_keep_tempfiles);
+fprintf(fp, "sphere_quality %f\n", sysenv.render.sphere_quality);
+fprintf(fp, "mpeg_quality %f\n", sysenv.render.mpeg_quality);
+fprintf(fp, "ribbon_quality %f\n", sysenv.render.ribbon_quality);
+fprintf(fp, "cylinder_quality %f\n", sysenv.render.cylinder_quality);
+fprintf(fp, "ball_radius %f\n", sysenv.render.ball_radius);
+fprintf(fp, "stick_thickness %f\n", sysenv.render.stick_thickness);
+fprintf(fp, "line_thickness %f\n", sysenv.render.line_thickness);
+fprintf(fp, "frame_thickness %f\n", sysenv.render.frame_thickness);
+fprintf(fp, "geom_line_width %f\n", sysenv.render.geom_line_width);
+fprintf(fp, "cpk_scale %f\n", sysenv.render.cpk_scale);
+fprintf(fp, "fog_density %f\n", sysenv.render.fog_density);
+fprintf(fp, "fog_start %f\n", sysenv.render.fog_start);
+fprintf(fp, "ribbon_curvature %f\n", sysenv.render.ribbon_curvature);
+fprintf(fp, "ribbon_thickness %f\n", sysenv.render.ribbon_thickness);
+fprintf(fp, "ahl_strength %f\n", sysenv.render.ahl_strength);
+fprintf(fp, "ahl_size %f\n", sysenv.render.ahl_size);
+fprintf(fp, "shl_strength %f\n", sysenv.render.shl_strength);
+fprintf(fp, "shl_size %f\n", sysenv.render.shl_size);
+/* fprintf(fp, "image_width %f\n", sysenv.render.image_width);
+fprintf(fp, "image_height %f\n", sysenv.render.image_height); */
+fprintf(fp, "zone_size %f\n", sysenv.render.zone_size);
+fprintf(fp, "auto_quality %d\n", sysenv.render.auto_quality);
+fprintf(fp, "fast_rotation %d\n", sysenv.render.fast_rotation);
+fprintf(fp, "ambience %f\n", sysenv.render.ambience);
+fprintf(fp, "transmit %f\n", sysenv.render.transmit);
+fprintf(fp, "ghost_opacity %f\n", sysenv.render.ghost_opacity);
+
+fprintf(fp,"VASP_v52 %d\n", sysenv.vasp_version52);
+
+fprintf(fp,"atom_order_1 %d\n", sysenv.atom_order[0]);
+fprintf(fp,"atom_order_2 %d\n", sysenv.atom_order[1]);
+fprintf(fp,"atom_order_3 %d\n", sysenv.atom_order[2]);
+fprintf(fp,"atom_order_4 %d\n", sysenv.atom_order[3]);
+
+fprintf(fp,"molecule_order_1 %d\n", sysenv.molecule_order[0]);
+fprintf(fp,"molecule_order_2 %d\n", sysenv.molecule_order[1]);
+fprintf(fp,"molecule_order_3 %d\n", sysenv.molecule_order[2]);
+fprintf(fp,"molecule_order_4 %d\n", sysenv.molecule_order[3]);
+
+fprintf(fp,"moldy_exe %s\n", sysenv.moldy_exe);
+
+fprintf(fp,"paste_replace %d\n", sysenv.paste_replace);
 
 /* write the non-default element data */
 write_elem_data(fp);
@@ -382,6 +744,7 @@ return(0);
 #define DEBUG_SYS_INIT 0
 void sys_init(gint argc, gchar *argv[])
 {
+gint i;
 gchar *temp;
 const gchar *ctemp;
 struct light_pak *light;
@@ -460,6 +823,17 @@ sysenv.file_type = DATA;
 sysenv.babel_type = AUTO;
 sysenv.num_elements = sizeof(elements) / sizeof(struct elem_pak);
 sysenv.elements = NULL;
+
+sysenv.vasp_version52 = TRUE;
+sysenv.paste_replace = FALSE;
+
+/* default atom order for Moldy files */
+for (i=0; i<4; i++)
+  sysenv.atom_order[i] = NONE;
+
+/* default molecule order for Moldy files */
+for (i=0; i<4; i++)
+  sysenv.molecule_order[i] = NONE;
 
 /* rendering setup */
 sysenv.render.width = 600;
@@ -574,7 +948,7 @@ if (sysenv.gdis_path)
   sysenv.elem_file = g_build_filename(sysenv.gdis_path, ELEM_FILE, NULL);
 else
   {
-  printf("WARNING: gdis directory not found.\n");
+  gui_text_show(WARNING, "GDIS directory not found.\n");
   sysenv.elem_file = g_build_filename(sysenv.cwd, ELEM_FILE, NULL);
   }
 
@@ -584,7 +958,7 @@ if (ctemp)
   sysenv.init_file = g_build_filename(ctemp, INIT_FILE, NULL);
 else
   {
-  printf("WARNING: home directory not found.\n");
+  gui_text_show(WARNING, "Home directory not found.\n");
   if (sysenv.gdis_path)
     sysenv.init_file = g_build_filename(sysenv.gdis_path, INIT_FILE, NULL);
   else
@@ -593,7 +967,7 @@ else
       sysenv.init_file = g_build_filename(sysenv.cwd, INIT_FILE, NULL);
     else
       {
-      printf("FATAL: current directory not found.\n");
+      gui_text_show(ERROR, "Current directory not found.\n");
       exit(-1);
       }
     }
@@ -607,6 +981,7 @@ sysenv.convert_exe = g_strdup("convert.exe");
 sysenv.viewer_exe = g_strdup("display.exe");
 sysenv.gulp_exe = g_strdup("gulp.exe");
 sysenv.gamess_exe = g_strdup("wingamess");
+sysenv.moldy_exe = g_strdup("moldy.exe");
 #else
 sysenv.babel_exe = g_strdup("babel");
 sysenv.povray_exe = g_strdup("povray");
@@ -617,6 +992,7 @@ sysenv.gamess_exe = g_strdup("run_gms_for_gdis");
 sysenv.vasp_exe = g_strdup("vasp");
 sysenv.uspex_exe = g_strdup("USPEX");
 sysenv.mpirun_exe = g_strdup("mpirun");
+sysenv.moldy_exe = g_strdup("moldy");
 #endif
 
 
@@ -657,6 +1033,7 @@ sysenv.uspex_path = NULL;
 sysenv.mpirun_path = NULL;
 sysenv.povray_path = NULL;
 sysenv.viewer_path = NULL;
+sysenv.moldy_path = NULL;
 if (read_gdisrc())
   {
   printf("creating: %-50s ", sysenv.init_file);
@@ -683,6 +1060,8 @@ if (!sysenv.mpirun_path)
   sysenv.mpirun_path = g_find_program_in_path(sysenv.mpirun_exe);
 if (!sysenv.povray_path)
   sysenv.povray_path = g_find_program_in_path(sysenv.povray_exe);
+if (!sysenv.moldy_path)
+  sysenv.moldy_path = g_find_program_in_path(sysenv.moldy_exe);
 
 /* display program */
 if (!sysenv.viewer_path)
@@ -870,3 +1249,4 @@ void redraw_canvas(gint dummy)
 {
 }
 #endif
+

@@ -200,12 +200,14 @@ gchar *monty_path;
 gchar *moldy_exe;
 gchar *moldy_path;
 
+gboolean vasp_version52;
+
 /* filetype filters */
 gint file_type;
 gint babel_type;
 gint write_gdisrc;
 int fortran_buffer;
-gboolean have_eps;/*for snapshot --OVHPA*/
+gboolean have_eps; /* for snapshot --OVHPA */
 
 /* centralized info on all supported file types */
 GSList *file_list;
@@ -244,7 +246,7 @@ gint pib_on;
 gint lmb_on;
 gint mcb_on;
 
-/*NEW - edit pak is here*/
+/* NEW - edit pak is here */
 struct edit_pak cedit;
 
 /* model related */
@@ -254,6 +256,7 @@ gint num_trees;
 gint num_displayed;
 gint displayed[MAX_DISPLAYED];
 gint select_mode;
+gboolean paste_replace;
 /* NEW - perform the periodic bond calc, slower when it's done, but */
 /* gives more info & speeds up subsequent stuff (eg unfrag) */
 gint calc_pbonds;
@@ -277,7 +280,7 @@ gint canvas_cols;
 GSList *canvas_list;
 GdkVisual *visual;
 GdkColormap *colourmap;
-GtkWidget* main_window;/* add main_window --OVHPA*/
+GtkWidget* main_window; /* add main_window --OVHPA */
 GtkWidget *display_box;
 GtkWidget *glarea;
 GtkWidget *surfaces;
@@ -524,7 +527,7 @@ gint rigid;
 gchar *rigid_move;
 gdouble maxcyc;
 gint super[3];
-gint no_esurf;     /* old gulp's can't handle sbulkenergy keyword */
+gint no_esurf;     /* old gulps can't handle sbulkenergy keyword */
 gdouble energy;
 gdouble esurf[2];   /* first - unre, second - re */
 /*
@@ -533,7 +536,7 @@ gdouble kpoints[3];
 */
 gchar *kpoints;
 gchar *esurf_units;
-gint no_eatt;      /* old gulp's can't handle dhkl keyword */
+gint no_eatt;      /* old gulps can't handle dhkl keyword */
 gdouble eatt[2];
 gchar *eatt_units;
 gdouble sbulkenergy;
@@ -754,7 +757,7 @@ enum siesta_pressure_measurement_type { P_PRES, MPA_PRES, GPA_PRES, ATM_PRES, BA
 //moment of inertia
 enum siesta_mominert_measurement_type { KGM_MOMINERT, RYFS_MOMINERT } md_nose_mass_units, md_parrinello_rahman_mass_units;
 
-//efield - what ever that is
+//efield - whatever that is
 //enum siesta_efield_measurement_type { VM_EFIELD, VMM_EFIELD, VANG_EFIELD, VBOHR_EFIELD, RYBOHRE_EFIELD, HARBOHRE_EFIELD };
 
 enum siesta_xc_functional_type { GGA_XCFUNC, LDA_XCFUNC, LSD_XCFUNC } xc_functional_type;
@@ -779,7 +782,7 @@ enum siesta_pao_basis_type { SPLIT_PAOBT, SPLITGAUSS_PAOBT, NODES_PAOBT, NONODES
 //PAO.BasisSize
 enum { SZ_ZETA, DZ_ZETA, SZP_ZETA, DZP_ZETA, CUSTOM_ZETA } basis_set;
 
-//CUSTOM_ZETA'S
+//CUSTOM_ZETAS
 gdouble custom_zeta;
 gdouble custom_zeta_polarisation;
 gboolean custom_zeta_checkbox;
@@ -1452,7 +1455,7 @@ gpointer plot;
 
 /* What about a shared area for similar data
  * other that property_list / property_table 
- * So one can directly access an array/value 
+ * so one can directly access an array/value 
  * for frequency, raman, dos, band, etc.. */
 
 /* density of states (DOS) */
