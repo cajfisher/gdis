@@ -323,9 +323,9 @@ struct model_pak *select_source;
 struct render_pak render;
 
 /* Atom ordering for output */
-gint atom_order[4];
+gint atom_order[5];
 /* Molecule ordering for output */
-gint molecule_order[4];
+gint molecule_order[5];
 
 /* task handling */
 GSList *task_list;

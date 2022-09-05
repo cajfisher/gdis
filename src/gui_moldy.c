@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2003 by Craig Andrew James Fisher
+Copyright (C) 2022 by Craig Andrew James Fisher
 Copyright (C) 2000 by Sean David Fleming
 
 sean@ivec.org

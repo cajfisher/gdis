@@ -700,6 +700,9 @@ switch(id)
   case ATOM_ORDER_TYPE_4:
     sysenv.atom_order[3] = choice;
   break;
+  case ATOM_ORDER_TYPE_5:
+    sysenv.atom_order[4] = choice;
+  break;
   }
 
 return(FALSE);
@@ -756,6 +759,9 @@ switch(id)
   break;
   case MOL_ORDER_TYPE_4:
     sysenv.molecule_order[3] = choice;
+  break;
+  case MOL_ORDER_TYPE_5:
+    sysenv.molecule_order[4] = choice;
   break;
   }
 
@@ -2723,7 +2729,7 @@ void settings_page(GtkWidget *box, gpointer dialog)
 {
 GList *list;
 GtkWidget *hbox, *vbox;
-GtkWidget *hbox1, *hbox2, *hbox3, *hbox4;
+GtkWidget *hbox1, *hbox2, *hbox3, *hbox4, *hbox5;
 GtkWidget *label, *combo;
 GString *entry;
 
@@ -2745,11 +2751,6 @@ hbox = gui_frame_hbox(" Species order when writing files ", FALSE, FALSE, box);
 /* Atom list ordering options */
 vbox = gui_frame_vbox("Atom order", FALSE, FALSE, hbox);
 
-/* options */
-hbox1 = gtk_hbox_new(FALSE, 0);
-gtk_box_pack_start(GTK_BOX(vbox), hbox1, TRUE, TRUE, 0);
-label = gtk_label_new("  1st  ");
-gtk_box_pack_start(GTK_BOX(hbox1), label, FALSE, FALSE, 0);
 list = NULL;
 list = g_list_append(list, "None");
 list = g_list_append(list, "Cations before anions");
@@ -2763,6 +2764,11 @@ list = g_list_append(list, "Masses large to small");
 list = g_list_append(list, "Names A to Z");
 list = g_list_append(list, "Names Z to A");
 
+/* options */
+hbox1 = gtk_hbox_new(FALSE, 0);
+gtk_box_pack_start(GTK_BOX(vbox), hbox1, TRUE, TRUE, 0);
+label = gtk_label_new("  1st  ");
+gtk_box_pack_start(GTK_BOX(hbox1), label, FALSE, FALSE, 0);
 select_entry(sysenv.atom_order[0], entry);
 
 combo = gtk_combo_new();
@@ -2821,6 +2827,22 @@ gtk_box_pack_start(GTK_BOX(hbox4), combo, FALSE, FALSE, 0);
 g_signal_connect(GTK_OBJECT(GTK_COMBO(combo)->entry), "changed",
                  GTK_SIGNAL_FUNC(event_atom_order_modify), (gpointer) combo);
 g_object_set_data(G_OBJECT(combo), "id", (gpointer) ATOM_ORDER_TYPE_4);
+
+hbox5 = gtk_hbox_new(FALSE, 0);
+gtk_box_pack_start(GTK_BOX(vbox), hbox5, FALSE, FALSE, 0);
+label = gtk_label_new("  5th  ");
+gtk_box_pack_start(GTK_BOX(hbox5), label, FALSE, FALSE, 0);
+
+select_entry(sysenv.atom_order[4], entry);
+
+combo = gtk_combo_new();
+gtk_entry_set_editable(GTK_ENTRY(GTK_COMBO(combo)->entry), FALSE);
+gtk_combo_set_popdown_strings(GTK_COMBO(combo), list);
+gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(combo)->entry), entry->str);
+gtk_box_pack_start(GTK_BOX(hbox5), combo, FALSE, FALSE, 0);
+g_signal_connect(GTK_OBJECT(GTK_COMBO(combo)->entry), "changed",
+                 GTK_SIGNAL_FUNC(event_atom_order_modify), (gpointer) combo);
+g_object_set_data(G_OBJECT(combo), "id", (gpointer) ATOM_ORDER_TYPE_5);
 
 /* Molecule list ordering options */
 vbox = gui_frame_vbox("Molecule order", FALSE, FALSE, hbox);
@@ -2889,6 +2911,22 @@ gtk_box_pack_start(GTK_BOX(hbox4), combo, FALSE, FALSE, 0);
 g_signal_connect(GTK_OBJECT(GTK_COMBO(combo)->entry), "changed",
                  GTK_SIGNAL_FUNC(event_molecule_order_modify), (gpointer) combo);
 g_object_set_data(G_OBJECT(combo), "id", (gpointer) MOL_ORDER_TYPE_4);
+
+hbox5 = gtk_hbox_new(FALSE, PANEL_SPACING);
+gtk_box_pack_start(GTK_BOX(vbox), hbox5, FALSE, FALSE, 0);
+label = gtk_label_new("  5th  ");
+gtk_box_pack_start(GTK_BOX(hbox5), label, FALSE, FALSE, 0);
+
+select_entry(sysenv.molecule_order[4], entry);
+
+combo = gtk_combo_new();
+gtk_entry_set_editable(GTK_ENTRY(GTK_COMBO(combo)->entry), FALSE);
+gtk_combo_set_popdown_strings(GTK_COMBO(combo), list);
+gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(combo)->entry), entry->str);
+gtk_box_pack_start(GTK_BOX(hbox5), combo, FALSE, FALSE, 0);
+g_signal_connect(GTK_OBJECT(GTK_COMBO(combo)->entry), "changed",
+                 GTK_SIGNAL_FUNC(event_molecule_order_modify), (gpointer) combo);
+g_object_set_data(G_OBJECT(combo), "id", (gpointer) MOL_ORDER_TYPE_5);
 }
 
 /**************************/
@@ -3734,4 +3772,3 @@ gui_button_x("Mark as ghost", select_flag_ghost, NULL, vbox);
 gui_button_x("Mark as normal", select_flag_normal, NULL, vbox);
 
 }
-
