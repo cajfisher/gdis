@@ -360,6 +360,12 @@ for (;;)
       sysenv.atom_order[3] = (gint) str_to_float(*(buff+1));
     }
 
+  if (g_ascii_strncasecmp("atom_order_5", *buff, 12) == 0)
+    {
+    if (num_tokens > 1)
+      sysenv.atom_order[4] = (gint) str_to_float(*(buff+1));
+    }
+
   if (g_ascii_strncasecmp("molecule_order_1", *buff, 16) == 0)
     {
     if (num_tokens > 1)
@@ -382,6 +388,12 @@ for (;;)
     {
     if (num_tokens > 1)
       sysenv.molecule_order[3] = (gint) str_to_float(*(buff+1));
+    }
+
+  if (g_ascii_strncasecmp("molecule_order_5", *buff, 16) == 0)
+    {
+    if (num_tokens > 1)
+      sysenv.molecule_order[4] = (gint) str_to_float(*(buff+1));
     }
 
   if (g_ascii_strcasecmp(*buff, "colour_fg") == 0)
@@ -717,15 +729,17 @@ fprintf(fp, "ghost_opacity %f\n", sysenv.render.ghost_opacity);
 
 fprintf(fp,"VASP_v52 %d\n", sysenv.vasp_version52);
 
-fprintf(fp,"atom_order_1 %d\n", sysenv.atom_order[0]);
-fprintf(fp,"atom_order_2 %d\n", sysenv.atom_order[1]);
-fprintf(fp,"atom_order_3 %d\n", sysenv.atom_order[2]);
-fprintf(fp,"atom_order_4 %d\n", sysenv.atom_order[3]);
+fprintf(fp, "atom_order_1 %d\n", sysenv.atom_order[0]);
+fprintf(fp, "atom_order_2 %d\n", sysenv.atom_order[1]);
+fprintf(fp, "atom_order_3 %d\n", sysenv.atom_order[2]);
+fprintf(fp, "atom_order_4 %d\n", sysenv.atom_order[3]);
+fprintf(fp, "atom_order_5 %d\n", sysenv.atom_order[4]);
 
-fprintf(fp,"molecule_order_1 %d\n", sysenv.molecule_order[0]);
-fprintf(fp,"molecule_order_2 %d\n", sysenv.molecule_order[1]);
-fprintf(fp,"molecule_order_3 %d\n", sysenv.molecule_order[2]);
-fprintf(fp,"molecule_order_4 %d\n", sysenv.molecule_order[3]);
+fprintf(fp, "molecule_order_1 %d\n", sysenv.molecule_order[0]);
+fprintf(fp, "molecule_order_2 %d\n", sysenv.molecule_order[1]);
+fprintf(fp, "molecule_order_3 %d\n", sysenv.molecule_order[2]);
+fprintf(fp, "molecule_order_4 %d\n", sysenv.molecule_order[3]);
+fprintf(fp, "molecule_order_5 %d\n", sysenv.molecule_order[4]);
 
 fprintf(fp,"moldy_exe %s\n", sysenv.moldy_exe);
 
@@ -828,11 +842,11 @@ sysenv.vasp_version52 = TRUE;
 sysenv.paste_replace = FALSE;
 
 /* default atom order for Moldy files */
-for (i=0; i<4; i++)
+for (i=0; i<5; i++)
   sysenv.atom_order[i] = NONE;
 
 /* default molecule order for Moldy files */
-for (i=0; i<4; i++)
+for (i=0; i<5; i++)
   sysenv.molecule_order[i] = NONE;
 
 /* rendering setup */
